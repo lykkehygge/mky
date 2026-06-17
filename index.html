@@ -7,20 +7,17 @@
   <style>
     /* ニューモーフィズム & 指定ブランドカラー設定（ライトモード） */
     :root {
-      /* 許可されたブランドカラーのみ使用 */
-      --color-base: #00385D;   /* 青（作業中・基本テキスト） */
-      --color-sub: #39DAFF;    /* 水色 */
-      --color-accent: #FFB900; /* 黄色（確認中・混雑・新着ドット） */
-      --color-black: #000000;  /* 黒（未着手・停止） */
+      --color-base: #00385D;   
+      --color-sub: #39DAFF;    
+      --color-accent: #FFB900; 
+      --color-black: #000000;  
       --color-white: #ffffff;  
       
-      /* ライトモード用の背景・テキストグレー */
       --nm-bg: #EFF2F9;
       --nm-text-main: #6E7F8D;
       --nm-text-light: #B5BFC6;
       --wireframe-line: rgba(110, 127, 141, 0.25);
       
-      /* シャドウ */
       --shadow-outer: 8px 8px 16px rgba(110, 127, 141, 0.2), -8px -8px 16px rgba(255, 255, 255, 1);
       --shadow-outer-sm: 4px 4px 8px rgba(110, 127, 141, 0.15), -4px -4px 8px rgba(255, 255, 255, 1);
       --shadow-inner: inset 4px 4px 8px rgba(110, 127, 141, 0.15), inset -4px -4px 8px rgba(255, 255, 255, 1);
@@ -39,15 +36,12 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* スクロールバー装飾 */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: var(--nm-bg); border-radius: 4px; box-shadow: var(--shadow-inner); }
     ::-webkit-scrollbar-thumb { background: var(--nm-text-light); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--nm-text-main); }
 
-    .main-content {
-      width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px;
-    }
+    .main-content { width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
 
     /* ヘッダー */
     .header {
@@ -57,7 +51,6 @@
     .brand { font-size: 1.8rem; font-weight: 300; color: var(--color-base); letter-spacing: 0.1em; line-height: 1.1; }
     .brand strong { font-weight: 800; display: block; }
     
-    /* ヘッダー右側（ログイン情報・ログアウト） */
     .header-user-info { display: flex; align-items: center; gap: 24px; font-size: 0.9rem; }
     .user-name { color: var(--color-base); font-weight: 600; letter-spacing: 0.05em; }
     .user-name span { color: var(--nm-text-light); font-weight: normal; margin-right: 8px;}
@@ -68,11 +61,9 @@
     .btn-logout:hover { background: var(--nm-bg); color: var(--color-sub); box-shadow: var(--shadow-inner); border-color: transparent;}
 
     /* トップアクション＆HUDパラメーターエリア */
-    .top-dashboard-section {
-      display: flex; gap: 24px; margin-bottom: 56px; align-items: stretch;
-    }
+    .top-dashboard-section { display: flex; gap: 24px; margin-bottom: 56px; align-items: stretch; }
 
-    /* New Request ボタン（パラメーターの左） */
+    /* New Request ボタン */
     .btn-new-req {
       flex-shrink: 0; width: 180px; background-color: var(--nm-bg); color: var(--color-base);
       border: 1px solid transparent; border-radius: 12px; cursor: pointer;
@@ -95,16 +86,13 @@
       margin-bottom: 12px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;
     }
     .hud-label::after { content: "＋"; font-size: 0.8rem; color: var(--wireframe-line); }
-    
     .hud-value { font-size: 2.2rem; font-weight: 300; color: var(--color-base); display: flex; align-items: baseline; gap: 4px; line-height: 1; }
     .hud-unit { font-size: 0.85rem; font-weight: 500; color: var(--nm-text-main); letter-spacing: 0.1em; text-transform: uppercase; }
-    
     .status-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background-color: var(--color-accent); box-shadow: 0 0 10px var(--color-accent); margin-right: 8px;}
 
-    /* ガントチャート（ライトモード・管理者仕様反映版） */
+    /* ガントチャート */
     .gantt-wrapper { margin-bottom: 80px; }
     .gantt-title { font-size: 1.2rem; font-weight: 800; color: var(--color-base); letter-spacing: 0.05em; margin-bottom: 24px; }
-    
     .gantt-scroll-container {
       max-height: 500px; overflow: auto; background: var(--nm-bg);
       border: 1px solid var(--wireframe-line); border-radius: 16px; box-shadow: var(--shadow-outer-sm);
@@ -121,7 +109,6 @@
       display: flex; flex-direction: column; justify-content: center; position: relative;
     }
     .gantt-row.header .gantt-cell-side { z-index: 30; font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light); }
-
     .gantt-cell-time { flex-grow: 1; display: grid; grid-template-columns: repeat(14, 1fr); grid-template-rows: 1fr; }
     .gantt-grid-cell { border-right: 1px solid rgba(110, 127, 141, 0.15); grid-row: 1; }
     .gantt-date {
@@ -131,23 +118,17 @@
 
     .task-title { font-size: 0.95rem; font-weight: 700; color: var(--color-base); margin-top: 6px; }
     
-    /* バッジ */
     .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.65rem; font-weight: 800; width: fit-content; border: 1px solid transparent; }
     .badge-blue { background-color: var(--color-base); color: var(--color-white); }
     .badge-yellow { background-color: var(--color-accent); color: var(--color-black); }
     .badge-bw { background-color: transparent; color: var(--color-black); border-color: var(--color-black); }
 
-    /* バー */
     .gantt-bar-wrapper { grid-row: 1; align-self: center; padding: 0 4px; z-index: 2; pointer-events: none; position: relative; }
-    .gantt-bar {
-      height: 28px; border-radius: 14px; display: flex; align-items: center; padding: 0 16px;
-      font-size: 0.75rem; font-weight: 800; border: 2px solid transparent;
-    }
+    .gantt-bar { height: 28px; border-radius: 14px; display: flex; align-items: center; padding: 0 16px; font-size: 0.75rem; font-weight: 800; border: 2px solid transparent; }
     .bg-blue { background-color: var(--color-base); color: var(--color-white); box-shadow: 0 4px 8px rgba(0, 56, 93, 0.3); border-color: var(--color-sub); }
     .bg-yellow { background-color: var(--color-accent); color: var(--color-black); box-shadow: 0 4px 8px rgba(255, 185, 0, 0.3); }
     .bg-bw { background-color: transparent; color: var(--color-black); border-color: var(--color-black); }
 
-    /* 新着ドットアニメーション（ライトモード用） */
     .update-dot {
       position: absolute; top: -6px; right: -6px; width: 14px; height: 14px;
       background-color: var(--color-accent); border-radius: 50%; border: 2px solid var(--nm-bg);
@@ -159,29 +140,98 @@
       100% { box-shadow: 0 0 0 0 rgba(255, 185, 0, 0); }
     }
 
-    /* 完了案件ギャラリー（グラスモーフィズム） */
+    /* 完了案件ギャラリー */
     .gallery-wrapper { overflow: hidden; border-radius: 24px; margin-bottom: 80px; }
     .gallery-header { padding: 32px 40px; font-size: 1.2rem; font-weight: 800; color: var(--color-base); letter-spacing: 0.05em; background-color: var(--nm-bg); border-bottom: 2px solid rgba(255,255,255,0.5); }
-    
     .slideshow-container { position: relative; width: 100%; height: 500px; background-color: var(--color-black); }
     .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s ease-in-out; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; filter: grayscale(100%); padding: 24px; }
     .slide.active { opacity: 1; filter: grayscale(100%) contrast(1.1); }
-
     .glass-card { background: rgba(15, 23, 30, 0.5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 48px; width: 100%; max-width: 500px; color: var(--color-white); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); transform: translateY(20px); transition: transform 1s ease-out; text-align: center; }
     .slide.active .glass-card { transform: translateY(0); }
     .glass-card .sub-title { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.2em; color: var(--color-sub); text-transform: uppercase; margin-bottom: 16px; }
     .glass-card h3 { font-size: 1.6rem; font-weight: 300; letter-spacing: 0.1em; margin-bottom: 24px; }
     .glass-card .line { width: 100%; height: 1px; background: rgba(255, 255, 255, 0.2); margin: 24px 0; }
-    
     .glass-list { list-style: none; text-align: left; }
     .glass-list li { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 0.9rem; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 8px; }
     .glass-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .glass-list .label { color: var(--color-accent); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.05em; }
     .glass-list .value { font-weight: 400; letter-spacing: 0.05em; text-align: right; }
-
     .slide-dots { position: absolute; bottom: 24px; width: 100%; display: flex; justify-content: center; gap: 12px; z-index: 10; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s ease; }
     .dot.active { background: var(--color-sub); transform: scale(1.5); }
+
+
+    /* --- 新規案件依頼フォーム モーダル --- */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); z-index: 1000;
+      justify-content: center; align-items: center; padding: 24px;
+    }
+    
+    .modal-container {
+      background-color: var(--nm-bg); border-radius: 24px; width: 100%; max-width: 700px;
+      max-height: 90vh; display: flex; flex-direction: column; position: relative;
+      box-shadow: var(--shadow-outer);
+    }
+    
+    .modal-close {
+      position: absolute; top: 24px; right: 24px; background: none; border: none;
+      font-size: 1.5rem; color: var(--nm-text-light); cursor: pointer; z-index: 10;
+    }
+
+    .modal-content-scroll { padding: 48px; overflow-y: auto; }
+
+    /* フォーム用スタイル */
+    .form-header { margin-bottom: 40px; text-align: center; }
+    .form-title { font-size: 2rem; font-weight: 800; color: var(--color-base); line-height: 1.2; margin-bottom: 8px; }
+    .form-subtitle { font-size: 0.9rem; color: var(--nm-text-light); letter-spacing: 0.05em; }
+    .form-group { margin-bottom: 32px; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--color-base); margin-bottom: 12px; letter-spacing: 0.05em; }
+    .required-mark { color: var(--color-accent); margin-left: 4px; font-weight: bold; }
+
+    .form-control {
+      width: 100%; background-color: var(--nm-bg); border: 1px solid transparent; border-radius: 12px;
+      padding: 16px 20px; font-size: 1rem; color: var(--color-base); font-family: inherit;
+      box-shadow: var(--shadow-inner); transition: all 0.3s ease; outline: none;
+    }
+    .form-control:focus { border-color: rgba(57, 218, 255, 0.5); box-shadow: var(--shadow-inner), 0 0 8px rgba(57, 218, 255, 0.2); }
+    textarea.form-control { min-height: 120px; resize: vertical; }
+
+    .radio-group { display: flex; gap: 16px; }
+    .radio-label { flex: 1; position: relative; cursor: pointer; }
+    .radio-label input { position: absolute; opacity: 0; cursor: pointer; }
+    .radio-btn {
+      display: flex; justify-content: center; align-items: center; padding: 16px; background-color: var(--nm-bg);
+      border-radius: 12px; font-weight: 600; font-size: 0.95rem; color: var(--nm-text-main);
+      box-shadow: var(--shadow-outer-sm); transition: all 0.2s ease; border: 1px solid transparent;
+    }
+    .radio-label input:checked ~ .radio-btn { box-shadow: var(--shadow-inner); color: var(--color-base); border-color: var(--color-sub); }
+
+    .file-upload-wrapper {
+      position: relative; width: 100%; padding: 32px 20px; background-color: var(--nm-bg);
+      border: 2px dashed var(--nm-text-light); border-radius: 16px; text-align: center;
+      box-shadow: var(--shadow-outer-sm); transition: all 0.3s ease; cursor: pointer;
+    }
+    .file-upload-wrapper:hover { border-color: var(--color-sub); background-color: rgba(57, 218, 255, 0.05); }
+    .file-upload-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+    .file-upload-text { font-weight: 600; color: var(--color-base); margin-bottom: 8px; }
+    .file-upload-subtext { font-size: 0.8rem; color: var(--nm-text-light); }
+    
+    .file-list { list-style: none; margin-top: 16px; padding: 0; }
+    .file-list-item {
+      display: flex; justify-content: space-between; align-items: center; background-color: var(--nm-bg);
+      padding: 12px 20px; border-radius: 12px; margin-bottom: 8px; font-size: 0.9rem; color: var(--color-base);
+      font-weight: 500; box-shadow: var(--shadow-inner); 
+    }
+    .file-remove-btn { color: var(--nm-text-light); font-size: 1.2rem; font-weight: bold; cursor: pointer; line-height: 1; padding: 4px; transition: color 0.2s; }
+    .file-remove-btn:hover { color: var(--color-accent); }
+
+    .form-actions { margin-top: 40px; display: flex; gap: 24px; }
+    .btn-submit { flex: 1; padding: 18px 0; border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 800; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s ease; background-color: var(--nm-bg); color: var(--color-base); box-shadow: var(--shadow-outer); }
+    .btn-submit:hover { box-shadow: var(--shadow-inner); color: var(--color-sub); }
+    .btn-cancel { flex: 1; padding: 18px 0; border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 800; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s ease; background-color: transparent; color: var(--nm-text-light); box-shadow: none; border: 1px solid var(--wireframe-line); }
+    .btn-cancel:hover { background-color: var(--nm-text-light); color: var(--color-white); }
+
 
     /* SP対応 */
     @media screen and (max-width: 900px) {
@@ -192,6 +242,11 @@
       .hud-params { grid-template-columns: 1fr 1fr; }
       .slideshow-container { height: 600px; }
       .glass-card { padding: 32px 20px; }
+      
+      .modal-content-scroll { padding: 32px 24px; }
+      .form-title { font-size: 1.6rem; }
+      .radio-group { flex-direction: column; gap: 12px; }
+      .form-actions { flex-direction: column-reverse; gap: 16px; margin-top: 32px; }
     }
   </style>
 </head>
@@ -213,8 +268,8 @@
     <!-- トップアクション＆HUD -->
     <div class="top-dashboard-section">
       
-      <!-- New Request ボタン -->
-      <button class="btn-new-req" onclick="alert('依頼フォームを開きます')">
+      <!-- New Request ボタン（クリックでモーダル起動） -->
+      <button class="btn-new-req" onclick="openRequestModal()">
         <span class="plus-icon">＋</span>
         <span>New Request</span>
       </button>
@@ -231,13 +286,11 @@
         </div>
         <div class="hud-box">
           <div class="hud-label">Earliest Start</div>
-          <!-- 管理者画面で設定された着手可能日を反映 -->
           <div class="hud-value"><span style="font-size: 1rem; margin-right: 4px;">最短</span>8<span class="hud-unit">日後〜</span></div>
         </div>
         <div class="hud-box">
           <div class="hud-label">System Status</div>
           <div class="hud-value" style="font-size: 1.2rem; font-weight: 800;">
-            <!-- 管理者画面で設定された稼働状況を反映 -->
             <span class="status-dot"></span>混雑
           </div>
         </div>
@@ -250,7 +303,6 @@
       <div class="gantt-scroll-container">
         <div class="gantt-table">
           
-          <!-- ヘッダー行 -->
           <div class="gantt-row header">
             <div class="gantt-cell-side">Project & Status</div>
             <div class="gantt-cell-time">
@@ -265,7 +317,7 @@
             </div>
           </div>
 
-          <!-- タスク行1：作業中（青・新着ドットあり） -->
+          <!-- タスク1：作業中 -->
           <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
             <div class="gantt-cell-side">
               <span class="badge badge-blue">作業中</span>
@@ -280,7 +332,7 @@
             </div>
           </div>
 
-          <!-- タスク行2：依頼者確認中（黄色） -->
+          <!-- タスク2：依頼者確認中 -->
           <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
             <div class="gantt-cell-side">
               <span class="badge badge-yellow">依頼者確認中</span>
@@ -294,7 +346,7 @@
             </div>
           </div>
 
-          <!-- タスク行3：未着手（黒） -->
+          <!-- タスク3：未着手 -->
           <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
             <div class="gantt-cell-side">
               <span class="badge badge-bw">未着手</span>
@@ -316,7 +368,6 @@
     <section class="gallery-wrapper">
       <div class="gallery-header">Completed Projects</div>
       <div class="slideshow-container">
-        
         <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=100&w=2000');">
           <div class="glass-card">
             <div class="sub-title">Branding & System</div>
@@ -330,7 +381,6 @@
             </ul>
           </div>
         </div>
-
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=100&w=2000');">
           <div class="glass-card">
             <div class="sub-title">Web Development</div>
@@ -344,59 +394,166 @@
             </ul>
           </div>
         </div>
-
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=100&w=2000');">
-          <div class="glass-card">
-            <div class="sub-title">E-Commerce Renewal</div>
-            <h3>ECサイト 改修・保守</h3>
-            <div class="line"></div>
-            <ul class="glass-list">
-              <li><span class="label">依頼者</span> <span class="value">Lykke Hygge 様</span></li>
-              <li><span class="label">作業期間</span> <span class="value">2025.10 - 2025.12</span></li>
-              <li><span class="label">金額</span> <span class="value">¥600,000</span></li>
-              <li><span class="label">内容</span> <span class="value">Liquidカスタマイズ</span></li>
-            </ul>
-          </div>
-        </div>
-
         <div class="slide-dots">
           <div class="dot active" onclick="currentSlide(0)"></div>
           <div class="dot" onclick="currentSlide(1)"></div>
-          <div class="dot" onclick="currentSlide(2)"></div>
         </div>
-
       </div>
     </section>
 
   </main>
 
+
+  <!-- 新規案件依頼フォーム（モーダル） -->
+  <div class="modal-overlay" id="requestModal">
+    <div class="modal-container">
+      <button class="modal-close" onclick="closeRequestModal()">×</button>
+      
+      <div class="modal-content-scroll">
+        <div class="form-header">
+          <h2 class="form-title">New Request</h2>
+          <p class="form-subtitle">新規案件の依頼フォーム</p>
+        </div>
+
+        <form onsubmit="event.preventDefault(); alert('依頼を送信しました。'); closeRequestModal();">
+          
+          <div class="form-group">
+            <label class="form-label">依頼者名（担当者）<span class="required-mark">*</span></label>
+            <input type="text" class="form-control" placeholder="例：株式会社〇〇 山田太郎" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">作成依頼物（案件名）<span class="required-mark">*</span></label>
+            <input type="text" class="form-control" placeholder="例：秋期キャンペーン用ランディングページ" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">希望納品日<span class="required-mark">*</span></label>
+            <input type="date" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">この案件で優先する項目<span class="required-mark">*</span></label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="priority" value="speed" checked>
+                <span class="radio-btn">納期優先（スピード重視）</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="priority" value="quality">
+                <span class="radio-btn">品質優先（クオリティ重視）</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">依頼内容・目的<span class="required-mark">*</span></label>
+            <textarea class="form-control" placeholder="ターゲット層、目的、参考URLなど、詳細を記述してください。" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">添付ファイル（複数選択・追加可能）</label>
+            <div class="file-upload-wrapper">
+              <input type="file" multiple id="fileInput">
+              <div class="file-upload-text">クリックしてファイルを追加</div>
+              <div class="file-upload-subtext">複数回に分けて追加できます（1ファイル最大50MB）</div>
+            </div>
+            <ul id="fileList" class="file-list"></ul>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" onclick="closeRequestModal()">キャンセル</button>
+            <button type="submit" class="btn-submit">依頼を送信する</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // スライドショー処理
     let slideIndex = 0;
     const slides = document.querySelectorAll('.slide');
     const dots = document.querySelectorAll('.dot');
     let slideInterval;
-
     function showSlide(index) {
+      if(slides.length === 0) return;
       slides.forEach(slide => slide.classList.remove('active'));
       dots.forEach(dot => dot.classList.remove('active'));
-      
       slideIndex = index;
       if (slideIndex >= slides.length) slideIndex = 0;
       if (slideIndex < 0) slideIndex = slides.length - 1;
-
       slides[slideIndex].classList.add('active');
       dots[slideIndex].classList.add('active');
     }
-
     function nextSlide() { showSlide(slideIndex + 1); }
-    
     function currentSlide(index) {
       clearInterval(slideInterval);
       showSlide(index);
       slideInterval = setInterval(nextSlide, 5000);
     }
+    if(slides.length > 0) { slideInterval = setInterval(nextSlide, 5000); }
 
-    slideInterval = setInterval(nextSlide, 5000);
+    // --- 依頼フォーム モーダル処理 ---
+    function openRequestModal() {
+      document.getElementById('requestModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // 背景スクロール禁止
+    }
+    function closeRequestModal() {
+      document.getElementById('requestModal').style.display = 'none';
+      document.body.style.overflow = ''; // 背景スクロール許可
+    }
+    // モーダルの外側をクリックしたら閉じる
+    document.getElementById('requestModal').addEventListener('click', function(e) {
+      if(e.target === this) closeRequestModal();
+    });
+
+    // --- ファイル追加・リスト表示処理 ---
+    const fileInput = document.getElementById('fileInput');
+    const fileListContainer = document.getElementById('fileList');
+    let dataTransfer = new DataTransfer();
+
+    fileInput.addEventListener('change', function() {
+      for (let i = 0; i < fileInput.files.length; i++) {
+        dataTransfer.items.add(fileInput.files[i]);
+      }
+      fileInput.files = dataTransfer.files;
+      renderFileList();
+    });
+
+    function renderFileList() {
+      fileListContainer.innerHTML = '';
+      for (let i = 0; i < fileInput.files.length; i++) {
+        const file = fileInput.files[i];
+        const li = document.createElement('li');
+        li.className = 'file-list-item';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = file.name;
+        
+        const removeBtn = document.createElement('span');
+        removeBtn.className = 'file-remove-btn';
+        removeBtn.innerHTML = '×';
+        removeBtn.onclick = function() { removeFile(i); };
+
+        li.appendChild(nameSpan);
+        li.appendChild(removeBtn);
+        fileListContainer.appendChild(li);
+      }
+    }
+
+    function removeFile(indexToRemove) {
+      const newDataTransfer = new DataTransfer();
+      for (let i = 0; i < fileInput.files.length; i++) {
+        if (i !== indexToRemove) {
+          newDataTransfer.items.add(fileInput.files[i]);
+        }
+      }
+      dataTransfer = newDataTransfer;
+      fileInput.files = dataTransfer.files;
+      renderFileList();
+    }
   </script>
 
 </body>
