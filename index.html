@@ -5,21 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>案件管理システム</title>
   <style>
-    /* ベース設定 */
+    /* 指定カラーパレット設定 */
     :root {
-      --primary-color: #2563eb;
-      --primary-hover: #1d4ed8;
-      --bg-color: #f8fafc;
-      --sidebar-bg: #ffffff;
-      --text-main: #0f172a;
-      --text-light: #64748b;
-      --border-color: #e2e8f0;
-      --status-green: #10b981;
-      --status-green-bg: #d1fae5;
-      --status-yellow: #f59e0b;
-      --status-yellow-bg: #fef3c7;
-      --status-gray: #94a3b8;
-      --status-gray-bg: #f1f5f9;
+      --color-base: #00385D;      /* ベース（ネイビー） */
+      --color-sub: #39DAFF;       /* サブ（水色） */
+      --color-accent: #FFB900;    /* アクセント（黄色） */
+      --color-black: #000000;     /* 黒 */
+      --color-white: #ffffff;     /* 白 */
+      
+      /* UI用の派生カラー（透明度や薄い背景用） */
+      --color-base-light: rgba(0, 56, 93, 0.05);
+      --color-border: rgba(0, 56, 93, 0.15);
+      --color-gray: #757575;      /* 補助テキスト用 */
     }
 
     * {
@@ -30,30 +27,32 @@
 
     body {
       font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
+      background-color: var(--color-base-light);
+      color: var(--color-black);
       display: flex;
       height: 100vh;
       overflow: hidden;
+      line-height: 1.6;
     }
 
     /* サイドバー */
     .sidebar {
-      width: 260px;
-      background-color: var(--sidebar-bg);
-      border-right: 1px solid var(--border-color);
+      width: 280px;
+      background-color: var(--color-base); /* ベースカラーを適用 */
+      color: var(--color-white);
       display: flex;
       flex-direction: column;
-      padding: 24px 20px;
+      padding: 40px 24px;
       flex-shrink: 0;
     }
 
+    /* ジャンプ率を大きく：ブランドロゴを強調 */
     .brand {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: var(--primary-color);
-      margin-bottom: 40px;
-      letter-spacing: 0.05em;
+      font-size: 2rem; 
+      font-weight: 900;
+      color: var(--color-sub); /* サブカラーで目立たせる */
+      margin-bottom: 56px;
+      line-height: 1.2;
     }
 
     .nav-menu {
@@ -61,153 +60,178 @@
       flex-grow: 1;
     }
 
-    .nav-item { margin-bottom: 8px; }
+    .nav-item { margin-bottom: 12px; }
 
+    /* ジャンプ率を大きく：ナビゲーション文字を大きめに */
     .nav-link {
       display: block;
-      padding: 12px 16px;
-      color: var(--text-light);
+      padding: 16px 20px;
+      color: var(--color-white);
       text-decoration: none;
       border-radius: 8px;
       transition: all 0.2s;
-      font-weight: 500;
+      font-size: 1.1rem;
+      font-weight: bold;
+      opacity: 0.8;
     }
 
     .nav-link:hover, .nav-link.active {
-      background-color: #eff6ff;
-      color: var(--primary-color);
+      background-color: var(--color-sub);
+      color: var(--color-base);
+      opacity: 1;
     }
 
     .user-info {
-      padding-top: 20px;
-      border-top: 1px solid var(--border-color);
-      font-size: 0.875rem;
-      color: var(--text-light);
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    .user-info strong {
+      font-size: 1.1rem;
+      display: block;
+      margin-top: 4px;
     }
 
     /* メインコンテンツ */
     .main-content {
       flex-grow: 1;
-      padding: 40px;
+      padding: 56px;
       overflow-y: auto;
+      background-color: var(--color-white);
     }
 
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 32px;
+      margin-bottom: 48px;
+      border-bottom: 4px solid var(--color-base);
+      padding-bottom: 16px;
     }
 
+    /* ジャンプ率を大きく：ページタイトルを特大に */
     .page-title {
-      font-size: 1.5rem;
-      font-weight: bold;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--color-base);
     }
 
+    /* ボタン（アクセントカラー適用） */
     .btn-primary {
-      background-color: var(--primary-color);
-      color: white;
+      background-color: var(--color-accent);
+      color: var(--color-black);
       border: none;
-      padding: 12px 24px;
+      padding: 16px 32px;
       border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: bold;
+      font-size: 1.1rem;
+      font-weight: 900;
       cursor: pointer;
-      transition: background-color 0.2s;
-      box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+      transition: transform 0.1s, box-shadow 0.1s;
+      box-shadow: 0 4px 0 var(--color-black); /* 立体感を出す */
     }
 
-    .btn-primary:hover { background-color: var(--primary-hover); }
+    .btn-primary:hover {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--color-black);
+    }
 
     /* 稼働メーター（カード） */
     .status-card {
-      background-color: white;
+      background-color: var(--color-base-light);
       border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 32px;
-      border: 1px solid var(--border-color);
+      padding: 32px;
+      margin-bottom: 48px;
+      border: 2px solid var(--color-base);
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
+    /* ジャンプ率を大きく：情報階層を明確に */
     .status-info h3 {
-      font-size: 1rem;
-      color: var(--text-light);
-      margin-bottom: 8px;
-      font-weight: normal;
+      font-size: 1.2rem;
+      color: var(--color-base);
+      margin-bottom: 12px;
+      font-weight: bold;
     }
 
     .status-indicator {
       display: inline-flex;
       align-items: center;
-      font-size: 1.125rem;
-      font-weight: bold;
+      font-size: 1.8rem; /* 強調して特大に */
+      font-weight: 900;
+      color: var(--color-black);
     }
 
     .status-dot {
-      width: 12px;
-      height: 12px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
-      margin-right: 12px;
-      background-color: var(--status-yellow); /* ガントチャートに合わせてやや混雑に */
+      margin-right: 16px;
+      background-color: var(--color-accent); /* アクセントカラー（黄）を混雑状況に使用 */
+      border: 2px solid var(--color-black);
     }
 
     /* ガントチャート */
     .gantt-wrapper {
-      background-color: white;
+      background-color: var(--color-white);
       border-radius: 12px;
-      border: 1px solid var(--border-color);
+      border: 2px solid var(--color-border);
       overflow-x: auto;
-      margin-bottom: 32px;
+      margin-bottom: 48px;
     }
 
     .gantt-header-title {
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border-color);
-      font-weight: bold;
-      background-color: #fff;
+      padding: 24px 32px;
+      border-bottom: 2px solid var(--color-border);
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--color-base);
     }
 
     .gantt-body {
       display: flex;
-      min-width: 900px; /* 縮み防止 */
+      min-width: 900px;
     }
 
     /* 左側：案件情報エリア */
     .gantt-sidebar {
-      width: 280px;
+      width: 320px;
       flex-shrink: 0;
-      border-right: 1px solid var(--border-color);
-      background-color: #f8fafc;
+      border-right: 2px solid var(--color-border);
+      background-color: var(--color-white);
     }
 
     .gantt-task-head {
-      height: 40px;
-      font-size: 0.8rem;
-      color: var(--text-light);
-      padding: 0 20px;
+      height: 48px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--color-base);
+      padding: 0 24px;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 2px solid var(--color-border);
+      background-color: var(--color-base-light);
     }
 
     .gantt-task {
-      height: 70px;
-      padding: 12px 20px;
-      border-bottom: 1px solid var(--border-color);
+      height: 80px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--color-border);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      background-color: white;
     }
 
     .gantt-task:last-child { border-bottom: none; }
 
+    /* ジャンプ率を大きく：タスク名を太く見やすく */
     .task-title {
-      font-size: 0.9rem;
-      font-weight: bold;
-      margin-top: 6px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--color-black);
+      margin-top: 8px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -222,19 +246,20 @@
 
     .gantt-dates {
       display: grid;
-      grid-template-columns: repeat(14, 1fr); /* 2週間分（14日間）のグリッド */
-      height: 40px;
-      border-bottom: 1px solid var(--border-color);
-      background-color: #f8fafc;
+      grid-template-columns: repeat(14, 1fr);
+      height: 48px;
+      border-bottom: 2px solid var(--color-border);
+      background-color: var(--color-base-light);
     }
 
     .gantt-date {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.75rem;
-      color: var(--text-light);
-      border-right: 1px dashed #e2e8f0;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--color-base);
+      border-right: 1px dashed var(--color-border);
     }
 
     .gantt-tracks {
@@ -243,13 +268,12 @@
     }
 
     .gantt-track {
-      height: 70px;
+      height: 80px;
       display: grid;
       grid-template-columns: repeat(14, 1fr);
-      border-bottom: 1px solid var(--border-color);
-      padding: 12px 0;
-      /* 背景の縦線を描画 */
-      background-image: linear-gradient(to right, transparent calc(100% - 1px), #f1f5f9 calc(100% - 1px));
+      border-bottom: 1px solid var(--color-border);
+      padding: 16px 0;
+      background-image: linear-gradient(to right, transparent calc(100% - 1px), var(--color-base-light) calc(100% - 1px));
       background-size: calc(100% / 14) 100%;
     }
 
@@ -258,66 +282,82 @@
     /* バー（予定） */
     .gantt-bar {
       margin: 0 4px;
-      border-radius: 6px;
+      border-radius: 4px;
       display: flex;
       align-items: center;
-      padding: 0 12px;
-      font-size: 0.8rem;
-      color: white;
-      font-weight: bold;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 0 16px;
+      font-size: 0.9rem;
+      color: var(--color-black);
+      font-weight: 900;
+      border: 2px solid var(--color-black);
       cursor: pointer;
       transition: opacity 0.2s;
     }
 
-    .gantt-bar:hover { opacity: 0.9; }
+    .gantt-bar:hover { opacity: 0.8; }
 
-    /* 色分け */
-    .bg-blue { background-color: var(--primary-color); }
-    .bg-yellow { background-color: var(--status-yellow); }
-    .bg-gray { background-color: var(--status-gray); color: white;}
+    /* 色分け（指定カラーを利用） */
+    .bg-sub { background-color: var(--color-sub); }
+    .bg-accent { background-color: var(--color-accent); }
+    .bg-base { background-color: var(--color-base); color: var(--color-white); border: 2px solid var(--color-base);}
 
     /* バッジ */
     .badge {
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: bold;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 900;
       display: inline-block;
       width: fit-content;
+      border: 1px solid var(--color-black);
     }
-    .badge-ongoing { background-color: var(--status-green-bg); color: #047857; }
-    .badge-review { background-color: var(--status-yellow-bg); color: #b45309; }
-    .badge-waiting { background-color: var(--status-gray-bg); color: #475569; }
+    .badge-ongoing { background-color: var(--color-sub); color: var(--color-black); }
+    .badge-review { background-color: var(--color-accent); color: var(--color-black); }
+    .badge-waiting { background-color: var(--color-white); color: var(--color-black); }
 
     /* モーダル */
     .modal-overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.7);
       justify-content: center;
       align-items: center;
       z-index: 1000;
     }
     .modal-content {
-      background: white;
-      padding: 32px;
-      border-radius: 12px;
+      background: var(--color-white);
+      padding: 48px;
+      border-radius: 16px;
       width: 100%;
-      max-width: 500px;
+      max-width: 600px;
+      border: 4px solid var(--color-base);
     }
-    .modal-content h2 { margin-bottom: 24px; }
-    .close-btn { margin-top: 24px; cursor: pointer; color: var(--text-light); text-decoration: underline; background: none; border: none; font-size: 1rem;}
+    .modal-content h2 { 
+      margin-bottom: 24px; 
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--color-base);
+    }
+    .close-btn { 
+      margin-top: 32px; 
+      cursor: pointer; 
+      color: var(--color-gray); 
+      text-decoration: underline; 
+      background: none; 
+      border: none; 
+      font-size: 1rem;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
 
   <aside class="sidebar">
-    <div class="brand">Marketing Portal</div>
+    <div class="brand">MARKETING<br>PORTAL</div>
     <ul class="nav-menu">
       <li class="nav-item"><a href="#" class="nav-link active">ダッシュボード</a></li>
-      <li class="nav-item"><a href="#" class="nav-link">案件一覧・ファイル</a></li>
+      <li class="nav-item"><a href="#" class="nav-link">案件・ファイル管理</a></li>
       <li class="nav-item"><a href="#" class="nav-link">設定</a></li>
     </ul>
     <div class="user-info">
@@ -381,19 +421,19 @@
 
           <div class="gantt-tracks">
             <div class="gantt-track">
-              <div class="gantt-bar bg-blue" style="grid-column: 1 / 9;" onclick="alert('案件詳細ページへ遷移します')">
+              <div class="gantt-bar bg-sub" style="grid-column: 1 / 9;" onclick="alert('案件詳細ページへ遷移します')">
                 デザイン・コーディング
               </div>
             </div>
 
             <div class="gantt-track">
-              <div class="gantt-bar bg-yellow" style="grid-column: 4 / 12;" onclick="alert('案件詳細ページへ遷移します')">
+              <div class="gantt-bar bg-accent" style="grid-column: 4 / 12;" onclick="alert('案件詳細ページへ遷移します')">
                 初稿提出・先方確認中
               </div>
             </div>
 
             <div class="gantt-track">
-              <div class="gantt-bar bg-gray" style="grid-column: 9 / 15;" onclick="alert('案件詳細ページへ遷移します')">
+              <div class="gantt-bar bg-base" style="grid-column: 9 / 15;" onclick="alert('案件詳細ページへ遷移します')">
                 着手予定
               </div>
             </div>
@@ -407,10 +447,10 @@
   <div class="modal-overlay" id="requestModal">
     <div class="modal-content">
       <h2>新規案件の依頼</h2>
-      <p style="color: #64748b; margin-bottom: 24px; font-size: 0.9rem;">
+      <p style="color: var(--color-gray); margin-bottom: 32px; font-size: 1rem;">
         ※現在、依頼フォームの設計中です。ここに目的、ターゲット、希望納期、ファイル添付欄などが配置されます。
       </p>
-      <button class="btn-primary" style="width: 100%;">送信する</button>
+      <button class="btn-primary" style="width: 100%; padding: 20px; font-size: 1.2rem;">送信する</button>
       <div style="text-align: center;">
         <button class="close-btn" onclick="closeModal()">キャンセル</button>
       </div>
