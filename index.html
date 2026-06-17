@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>案件管理システム</title>
+  <style>
+    /* ベース設定 */
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f8fafc;
+      --sidebar-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-light: #64748b;
+      --border-color: #e2e8f0;
+      --status-green: #10b981;
+      --status-green-bg: #d1fae5;
+      --status-yellow: #f59e0b;
+      --status-yellow-bg: #fef3c7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* サイドバー */
+    .sidebar {
+      width: 260px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 20px;
+    }
+
+    .brand {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 40px;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-menu {
+      list-style: none;
+      flex-grow: 1;
+    }
+
+    .nav-item {
+      margin-bottom: 8px;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 12px 16px;
+      color: var(--text-light);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background-color: #eff6ff;
+      color: var(--primary-color);
+    }
+
+    .user-info {
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    /* メインコンテンツ */
+    .main-content {
+      flex-grow: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* 稼働メーター（カード） */
+    .status-card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .status-info h3 {
+      font-size: 1rem;
+      color: var(--text-light);
+      margin-bottom: 8px;
+      font-weight: normal;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      font-size: 1.125rem;
+      font-weight: bold;
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+
+    .dot-green { background-color: var(--status-green); }
+    .dot-yellow { background-color: var(--status-yellow); }
+
+    /* 案件一覧テーブル */
+    .table-container {
+      background-color: white;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      padding: 16px 24px;
+      font-size: 0.875rem;
+      color: var(--text-light);
+      background-color: #f8fafc;
+      font-weight: 500;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 16px 24px;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+
+    tbody tr:hover {
+      background-color: #f1f5f9;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* バッジ */
+    .badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .badge-ongoing {
+      background-color: var(--status-green-bg);
+      color: #047857;
+    }
+
+    .badge-review {
+      background-color: var(--status-yellow-bg);
+      color: #b45309;
+    }
+
+    /* モーダル（簡易版） */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 500px;
+    }
+    .modal-content h2 { margin-bottom: 24px; }
+    .close-btn { margin-top: 24px; cursor: pointer; color: var(--text-light); text-decoration: underline; background: none; border: none; font-size: 1rem;}
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">Marketing Portal</div>
+    <ul class="nav-menu">
+      <li class="nav-item"><a href="#" class="nav-link active">ダッシュボード</a></li>
+      <li class="nav-item"><a href="#" class="nav-link">案件一覧</a></li>
+      <li class="nav-item"><a href="#" class="nav-link">設定</a></li>
+    </ul>
+    <div class="user-info">
+      ログイン中: <br><strong>株式会社〇〇 担当者様</strong>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <h1 class="page-title">ダッシュボード</h1>
+      <button class="btn-primary" onclick="openModal()">＋ 新規案件を依頼する</button>
+    </header>
+
+    <section class="status-card">
+      <div class="status-info">
+        <h3>マーケティング部 現在の稼働状況</h3>
+        <div class="status-indicator">
+          <span class="status-dot dot-green"></span>
+          通常通り受付可能（最短着手：2営業日後〜）
+        </div>
+      </div>
+    </section>
+
+    <section class="table-container">
+      <div class="table-header">進行中の案件</div>
+      <table>
+        <thead>
+          <tr>
+            <th>ステータス</th>
+            <th>案件名</th>
+            <th>希望納期</th>
+            <th>最終更新日</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr onclick="alert('案件詳細ページへ遷移します')">
+            <td><span class="badge badge-ongoing">進行中</span></td>
+            <td>秋期キャンペーンLP制作</td>
+            <td>2026/07/15</td>
+            <td>2026/06/15</td>
+          </tr>
+          <tr onclick="alert('案件詳細ページへ遷移します')">
+            <td><span class="badge badge-review">確認待ち</span></td>
+            <td>展示会用パンフレット改修</td>
+            <td>2026/06/30</td>
+            <td>2026/06/16</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="requestModal">
+    <div class="modal-content">
+      <h2>新規案件の依頼</h2>
+      <p style="color: #64748b; margin-bottom: 24px; font-size: 0.9rem;">
+        ※現在、依頼フォームの設計中です。ここに目的、ターゲット、希望納期、ファイル添付欄などが配置されます。
+      </p>
+      <button class="btn-primary" style="width: 100%;">送信する</button>
+      <div style="text-align: center;">
+        <button class="close-btn" onclick="closeModal()">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById('requestModal').style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('requestModal').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
