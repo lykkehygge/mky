@@ -7,19 +7,16 @@
   <style>
     /* ダークモード・ニューモーフィズム設定 */
     :root {
-      /* ブランドカラー（ダーク背景に映えるよう微調整） */
-      --color-base: #1A5A85;   /* 少し明るめのネイビー */
-      --color-sub: #39DAFF;    /* 水色 */
-      --color-accent: #FFB900; /* 黄色 */
+      --color-base: #1A5A85;   
+      --color-sub: #39DAFF;    
+      --color-accent: #FFB900; 
       --color-white: #ffffff;
       
-      /* 管理者用ダークテーマ */
-      --nm-bg-dark: #2A2E33;       /* ベースの濃いグレー */
-      --nm-text-main-dark: #D1D5DB; /* 基本テキスト（明るいグレー） */
-      --nm-text-light-dark: #9CA3AF; /* 補助テキスト */
+      --nm-bg-dark: #2A2E33;       
+      --nm-text-main-dark: #D1D5DB; 
+      --nm-text-light-dark: #9CA3AF; 
       --wireframe-line-dark: rgba(255, 255, 255, 0.1);
       
-      /* ダークモード用のシャドウ（白と黒の光を調整） */
       --shadow-outer-dark: 8px 8px 16px rgba(15, 17, 20, 0.6), -8px -8px 16px rgba(55, 60, 66, 0.4);
       --shadow-outer-sm-dark: 4px 4px 8px rgba(15, 17, 20, 0.6), -4px -4px 8px rgba(55, 60, 66, 0.4);
       --shadow-inner-dark: inset 4px 4px 8px rgba(15, 17, 20, 0.6), inset -4px -4px 8px rgba(55, 60, 66, 0.4);
@@ -38,6 +35,12 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* スクロールバー装飾（全体＆各コンテナ共通） */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--nm-bg-dark); border-radius: 4px; box-shadow: var(--shadow-inner-dark); }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
     .main-content {
       width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px;
     }
@@ -47,23 +50,19 @@
       display: flex; justify-content: space-between; align-items: flex-end;
       margin-bottom: 40px; border-bottom: 1px solid var(--wireframe-line-dark); padding-bottom: 24px;
     }
-
     .brand { font-size: 1.8rem; font-weight: 300; color: var(--color-sub); letter-spacing: 0.1em; line-height: 1.1; }
     .brand strong { font-weight: 800; display: block; color: var(--color-white); }
     .admin-badge {
       display: inline-block; padding: 4px 12px; background: var(--color-accent); color: #000;
       border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-bottom: 8px; letter-spacing: 0.1em;
     }
-
     .header-actions { display: flex; align-items: center; gap: 24px; }
-
     .btn-icon {
       background-color: var(--nm-bg-dark); color: var(--color-sub); border: none; width: 48px; height: 48px;
       border-radius: 50%; font-size: 1.2rem; cursor: pointer; box-shadow: var(--shadow-outer-dark);
       transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; position: relative;
     }
     .btn-icon:hover { box-shadow: var(--shadow-inner-dark); }
-    /* 通知バッジ（赤丸） */
     .notification-dot {
       position: absolute; top: 8px; right: 8px; width: 10px; height: 10px;
       background-color: #EF4444; border-radius: 50%; border: 2px solid var(--nm-bg-dark);
@@ -72,8 +71,15 @@
     /* お知らせ（通知）パネル */
     .alerts-section { margin-bottom: 56px; }
     .alerts-title { font-size: 1.2rem; font-weight: 800; color: var(--color-white); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-    .alerts-container { display: flex; flex-direction: column; gap: 16px; }
     
+    /* スクロールコンテナ追加 */
+    .alerts-scroll-container {
+      max-height: 280px; /* 約3枚分で見切れる高さ */
+      overflow-y: auto;
+      padding: 4px 8px 4px 4px; /* スクロールバーと影のための余白 */
+    }
+
+    .alerts-container { display: flex; flex-direction: column; gap: 16px; }
     .alert-card {
       background-color: var(--nm-bg-dark); padding: 20px 24px; border-radius: 16px;
       box-shadow: var(--shadow-outer-sm-dark); display: flex; align-items: center; justify-content: space-between;
@@ -96,50 +102,82 @@
     }
     .btn-view:hover { background: var(--color-sub); color: #000; border-color: var(--color-sub); }
 
-    /* 管理用ダッシュボード（稼働操作パネル） */
-    .admin-controls {
-      display: grid; grid-template-columns: 1fr 2fr; gap: 40px; margin-bottom: 56px;
-    }
-    .nm-card-dark {
-      background-color: var(--nm-bg-dark); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-outer-dark);
-    }
+    /* 管理用ダッシュボード（2カラム） */
+    .admin-controls { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; margin-bottom: 56px; }
+    .nm-card-dark { background-color: var(--nm-bg-dark); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-outer-dark); }
     .control-title { font-size: 1.1rem; font-weight: 700; color: var(--color-white); margin-bottom: 24px; letter-spacing: 0.05em; }
 
-    /* 稼働状況スイッチ（ラジオボタン風トグル） */
-    .status-toggle { display: flex; background: var(--shadow-inner-dark); border-radius: 12px; padding: 4px; box-shadow: var(--shadow-inner-dark); }
+    /* 稼働状況設定（4段階） */
+    .status-toggle { 
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; 
+      background: var(--shadow-inner-dark); border-radius: 12px; padding: 8px; box-shadow: var(--shadow-inner-dark); 
+      margin-bottom: 24px;
+    }
     .status-toggle label {
-      flex: 1; text-align: center; padding: 12px 0; font-size: 0.85rem; font-weight: 700; color: var(--nm-text-light-dark);
+      text-align: center; padding: 12px 4px; font-size: 0.8rem; font-weight: 700; color: var(--nm-text-light-dark);
       cursor: pointer; border-radius: 8px; transition: all 0.3s;
     }
     .status-toggle input { display: none; }
     .status-toggle input:checked + label { background: var(--nm-bg-dark); color: var(--color-white); box-shadow: var(--shadow-outer-sm-dark); }
     .status-toggle input[value="normal"]:checked + label { color: #10B981; border: 1px solid #10B981;}
+    .status-toggle input[value="slight"]:checked + label { color: var(--color-sub); border: 1px solid var(--color-sub);}
     .status-toggle input[value="busy"]:checked + label { color: var(--color-accent); border: 1px solid var(--color-accent);}
+    .status-toggle input[value="stop"]:checked + label { color: #EF4444; border: 1px solid #EF4444;}
 
-    /* 簡易集計HUD */
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .stat-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; border-right: 1px dashed var(--wireframe-line-dark); }
+    /* 最短着手日数の入力 */
+    .input-group { display: flex; align-items: center; gap: 12px; }
+    .input-group label { font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light-dark); }
+    .input-number {
+      background: var(--shadow-inner-dark); border: 1px solid transparent; border-radius: 8px;
+      color: var(--color-sub); font-size: 1.2rem; font-weight: 700; text-align: center;
+      width: 80px; padding: 8px; outline: none; box-shadow: var(--shadow-inner-dark); transition: all 0.3s;
+    }
+    .input-number:focus { border-color: var(--color-sub); }
+
+    /* 全体集計HUD（4項目に変更） */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; height: 100%; align-content: center; }
+    .stat-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 8px; border-right: 1px dashed var(--wireframe-line-dark); }
     .stat-box:last-child { border-right: none; }
-    .stat-val { font-size: 2.5rem; font-weight: 300; color: var(--color-sub); line-height: 1; margin-bottom: 8px; }
-    .stat-label { font-size: 0.75rem; font-weight: 600; color: var(--nm-text-light-dark); text-transform: uppercase; letter-spacing: 0.1em; }
+    .stat-val { font-size: 2.2rem; font-weight: 300; color: var(--color-sub); line-height: 1; margin-bottom: 8px; }
+    .stat-label { font-size: 0.7rem; font-weight: 600; color: var(--nm-text-light-dark); text-transform: uppercase; letter-spacing: 0.05em; text-align: center;}
 
     /* 全案件リスト管理テーブル */
     .table-wrapper {
       background-color: var(--nm-bg-dark); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-outer-dark);
-      overflow-x: auto;
     }
-    .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;}
+    
+    /* セグメント＆検索エリア */
+    .filter-area { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; width: 100%; }
+    .filter-select {
+      background: var(--nm-bg-dark); border: 1px solid var(--wireframe-line-dark); padding: 12px 16px; border-radius: 20px;
+      color: var(--color-white); font-size: 0.9rem; outline: none; box-shadow: var(--shadow-outer-sm-dark); cursor: pointer;
+    }
+    .filter-select:focus { border-color: var(--color-sub); }
+    
     .search-bar {
-      background: var(--shadow-inner-dark); border: none; padding: 12px 20px; border-radius: 20px;
-      color: var(--color-white); font-size: 0.9rem; outline: none; width: 300px; box-shadow: var(--shadow-inner-dark);
+      flex-grow: 1; background: var(--shadow-inner-dark); border: 1px solid transparent; padding: 12px 20px; border-radius: 20px;
+      color: var(--color-white); font-size: 0.9rem; outline: none; box-shadow: var(--shadow-inner-dark); min-width: 250px;
     }
-    .search-bar::placeholder { color: var(--nm-text-light-dark); }
+    .search-bar:focus { border-color: var(--color-sub); }
+
+    /* テーブルのスクロールコンテナ */
+    .table-scroll-container {
+      max-height: 500px;
+      overflow-y: auto;
+      border: 1px solid var(--wireframe-line-dark);
+      border-radius: 12px;
+    }
 
     table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; }
-    th {
+    
+    /* ヘッダー固定 */
+    thead th {
+      position: sticky; top: 0; z-index: 10; background-color: #24282d; /* スクロール時に透けないように少し濃く */
       padding: 16px 24px; font-size: 0.8rem; font-weight: 600; color: var(--nm-text-light-dark);
       text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--wireframe-line-dark);
     }
+
     td {
       padding: 20px 24px; font-size: 0.95rem; font-weight: 500; color: var(--color-white);
       border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle; cursor: pointer; transition: background 0.2s;
@@ -150,19 +188,20 @@
     .date-warn { color: var(--color-accent); font-weight: bold; }
 
     /* バッジ */
-    .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; border: 1px solid transparent; }
+    .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; border: 1px solid transparent; white-space: nowrap;}
     .badge-blue { background-color: rgba(57, 218, 255, 0.1); color: var(--color-sub); border-color: var(--color-sub); }
     .badge-yellow { background-color: rgba(255, 185, 0, 0.1); color: var(--color-accent); border-color: var(--color-accent); }
     .badge-bw { background-color: transparent; color: var(--nm-text-main-dark); border-color: var(--nm-text-main-dark); }
+    .badge-green { background-color: rgba(16, 185, 129, 0.1); color: #10B981; border-color: #10B981; }
 
-    /* SP対応 */
     @media screen and (max-width: 900px) {
       .admin-controls { grid-template-columns: 1fr; gap: 24px; }
       .header { flex-direction: column; align-items: flex-start; gap: 16px; }
       .alerts-section { margin-bottom: 40px; }
       .alert-card { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .table-header { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .search-bar { width: 100%; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .stat-box:nth-child(2) { border-right: none; }
+      .stat-box { padding: 8px; }
     }
   </style>
 </head>
@@ -178,77 +217,94 @@
         </div>
       </div>
       <div class="header-actions">
-        <button class="btn-icon" title="通知">
-          🔔
-          <span class="notification-dot"></span>
-        </button>
-        <button class="btn-icon" title="ログアウト">
-          🚪
-        </button>
+        <button class="btn-icon" title="通知">🔔<span class="notification-dot"></span></button>
+        <button class="btn-icon" title="ログアウト">🚪</button>
       </div>
     </header>
 
     <section class="alerts-section">
-      <h2 class="alerts-title">📣 Updates / アクションが必要な案件</h2>
-      <div class="alerts-container">
-        
-        <div class="alert-card new" onclick="alert('案件詳細ページへ移動します')">
-          <div class="alert-info">
-            <div class="alert-msg"><span>[NEW]</span> 新規の案件依頼が届きました。</div>
-            <div class="alert-meta">「展示会用ノベルティデザイン」 - 株式会社〇〇 様 (10 mins ago)</div>
+      <h2 class="alerts-title">📣 Updates / 最新のアクション</h2>
+      <div class="alerts-scroll-container">
+        <div class="alerts-container">
+          <div class="alert-card new" onclick="alert('案件詳細ページへ移動します')">
+            <div class="alert-info">
+              <div class="alert-msg"><span>[NEW]</span> 新規の案件依頼が届きました。</div>
+              <div class="alert-meta">「展示会用ノベルティデザイン」 - 株式会社〇〇 様 (10 mins ago)</div>
+            </div>
+            <button class="btn-view">確認する</button>
           </div>
-          <button class="btn-view">確認する</button>
-        </div>
-
-        <div class="alert-card urgent" onclick="alert('案件詳細ページへ移動します')">
-          <div class="alert-info">
-            <div class="alert-msg"><span>[UPDATE]</span> クライアントからファイルがアップロードされました。</div>
-            <div class="alert-meta">「秋期キャンペーンLP制作」に画像素材が追加されました。 (1 hour ago)</div>
+          <div class="alert-card urgent" onclick="alert('案件詳細ページへ移動します')">
+            <div class="alert-info">
+              <div class="alert-msg"><span>[UPDATE]</span> クライアントからファイルがアップロードされました。</div>
+              <div class="alert-meta">「秋期キャンペーンLP制作」に画像素材が追加されました。 (1 hour ago)</div>
+            </div>
+            <button class="btn-view">ファイルを見る</button>
           </div>
-          <button class="btn-view">ファイルを見る</button>
-        </div>
-
-        <div class="alert-card" onclick="alert('案件詳細ページへ移動します')">
-          <div class="alert-info">
-            <div class="alert-msg"><span>[MTG]</span> オンラインMTGのリクエストを受信しました。</div>
-            <div class="alert-meta">「ハイヤー予約サイト構築」 - CLoVER Hire 様 (2 hours ago)</div>
+          <div class="alert-card" onclick="alert('案件詳細ページへ移動します')">
+            <div class="alert-info">
+              <div class="alert-msg"><span>[MTG]</span> オンラインMTGのリクエストを受信しました。</div>
+              <div class="alert-meta">「ハイヤー予約サイト構築」 - CLoVER Hire 様 (2 hours ago)</div>
+            </div>
+            <button class="btn-view">日程を調整</button>
           </div>
-          <button class="btn-view">日程を調整</button>
+          <div class="alert-card" onclick="alert('案件詳細ページへ移動します')">
+            <div class="alert-info">
+              <div class="alert-msg"><span>[MSG]</span> 新着メッセージがあります。</div>
+              <div class="alert-meta">「社内報 7月号デザイン」 - 広報部 様 (Yesterday)</div>
+            </div>
+            <button class="btn-view">返信する</button>
+          </div>
         </div>
-
       </div>
     </section>
 
     <section class="admin-controls">
       
       <div class="nm-card-dark">
-        <h3 class="control-title">フロント表示設定（稼働メーター）</h3>
+        <h3 class="control-title">フロント表示設定（稼働メーター操作）</h3>
         <p style="font-size: 0.8rem; color: var(--nm-text-light-dark); margin-bottom: 16px;">
-          クライアント（依頼者）画面に表示される受付状況を切り替えます。
+          クライアント画面に表示される受付状況と、最短着手までの日数を設定します。
         </p>
+        
         <div class="status-toggle">
-          <input type="radio" id="status_normal" name="work_status" value="normal">
-          <label for="status_normal">通常受付可</label>
+          <input type="radio" id="st_normal" name="work_status" value="normal">
+          <label for="st_normal">通常受付</label>
           
-          <input type="radio" id="status_busy" name="work_status" value="busy" checked>
-          <label for="status_busy">やや混雑（納期調整）</label>
+          <input type="radio" id="st_slight" name="work_status" value="slight" checked>
+          <label for="st_slight">やや混雑</label>
+          
+          <input type="radio" id="st_busy" name="work_status" value="busy">
+          <label for="st_busy">混雑（納期注意）</label>
+          
+          <input type="radio" id="st_stop" name="work_status" value="stop">
+          <label for="st_stop">新規受付停止</label>
+        </div>
+
+        <div class="input-group">
+          <label>最短着手可能日（依頼から）</label>
+          <input type="number" class="input-number" value="8" min="0">
+          <label>日後</label>
         </div>
       </div>
 
-      <div class="nm-card-dark">
+      <div class="nm-card-dark" style="display: flex; flex-direction: column;">
         <h3 class="control-title">Marketing Dept. Overview</h3>
         <div class="stats-grid">
           <div class="stat-box">
             <div class="stat-val">12</div>
-            <div class="stat-label">進行中案件</div>
+            <div class="stat-label">進行中<br>案件</div>
           </div>
           <div class="stat-box">
             <div class="stat-val" style="color: var(--color-accent);">03</div>
-            <div class="stat-label">先方確認待ち</div>
+            <div class="stat-label">先方確認<br>待ち</div>
           </div>
           <div class="stat-box">
             <div class="stat-val" style="color: var(--nm-text-main-dark);">05</div>
-            <div class="stat-label">未着手</div>
+            <div class="stat-label">未着手<br>(待機)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" style="color: #10B981;">128</div>
+            <div class="stat-label">完了<br>（実績数）</div>
           </div>
         </div>
       </div>
@@ -258,54 +314,103 @@
     <section class="table-wrapper">
       <div class="table-header">
         <h2 class="control-title" style="margin: 0;">All Projects Management</h2>
-        <input type="text" class="search-bar" placeholder="案件名やクライアント名で検索...">
+      </div>
+      
+      <div class="filter-area" style="margin-bottom: 24px;">
+        <select class="filter-select" id="filterClient">
+          <option value="">全ての依頼者</option>
+          <option value="clover">CLoVER Hire 様</option>
+          <option value="french">French LABO. 様</option>
+          <option value="lykke">Lykke Hygge 様</option>
+          <option value="other">社内・その他</option>
+        </select>
+        
+        <select class="filter-select" id="filterStatus">
+          <option value="">全てのステータス</option>
+          <option value="ongoing">作業中</option>
+          <option value="review">先方確認中</option>
+          <option value="waiting">未着手</option>
+          <option value="done">完了</option>
+        </select>
+        
+        <input type="text" class="search-bar" placeholder="案件名で検索...">
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Status</th>
-            <th>Project Name / Client</th>
-            <th>Priority</th>
-            <th>Due Date</th>
-            <th>Last Update</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr onclick="alert('管理者用の案件詳細ページ（チャット返信やステータス変更機能付き）へ遷移します')">
-            <td><span class="badge badge-yellow">先方確認中</span></td>
-            <td>
-              <div>秋期キャンペーンLP制作</div>
-              <div class="client-name">株式会社〇〇 山田太郎</div>
-            </td>
-            <td>品質優先</td>
-            <td><span class="date-warn">2026/06/25</span> (残8日)</td>
-            <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">1時間前<br>ファイル受信</td>
-          </tr>
-          
-          <tr onclick="alert('管理者用の案件詳細ページへ遷移します')">
-            <td><span class="badge badge-blue">作業中</span></td>
-            <td>
-              <div>仏蘭西レストラン 立ち上げ</div>
-              <div class="client-name">French LABO. 様</div>
-            </td>
-            <td>納期優先</td>
-            <td>2026/07/10</td>
-            <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">昨日 14:30<br>メッセージ送信</td>
-          </tr>
-
-          <tr onclick="alert('管理者用の案件詳細ページへ遷移します')">
-            <td><span class="badge badge-bw">未着手</span></td>
-            <td>
-              <div>展示会用ノベルティデザイン</div>
-              <div class="client-name">株式会社〇〇 鈴木一郎</div>
-            </td>
-            <td>納期優先</td>
-            <td>2026/07/15</td>
-            <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">本日 10:20<br>新規受付</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-scroll-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Project Name / Client</th>
+              <th>Priority</th>
+              <th>Due Date</th>
+              <th>Last Update</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr onclick="alert('管理者用の案件詳細ページへ遷移します')">
+              <td><span class="badge badge-yellow">先方確認中</span></td>
+              <td>
+                <div>秋期キャンペーンLP制作</div>
+                <div class="client-name">社内・その他 (山田太郎)</div>
+              </td>
+              <td>品質優先</td>
+              <td><span class="date-warn">2026/06/25</span> (残8日)</td>
+              <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">1時間前<br>ファイル受信</td>
+            </tr>
+            <tr onclick="alert('管理者用の案件詳細ページへ遷移します')">
+              <td><span class="badge badge-blue">作業中</span></td>
+              <td>
+                <div>仏蘭西レストラン 立ち上げ</div>
+                <div class="client-name">French LABO. 様</div>
+              </td>
+              <td>納期優先</td>
+              <td>2026/07/10</td>
+              <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">昨日 14:30<br>メッセージ送信</td>
+            </tr>
+            <tr onclick="alert('管理者用の案件詳細ページへ遷移します')">
+              <td><span class="badge badge-bw">未着手</span></td>
+              <td>
+                <div>展示会用ノベルティデザイン</div>
+                <div class="client-name">社内・その他 (鈴木一郎)</div>
+              </td>
+              <td>納期優先</td>
+              <td>2026/07/15</td>
+              <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">本日 10:20<br>新規受付</td>
+            </tr>
+            <tr onclick="alert('管理者用の案件詳細ページへ遷移します')">
+              <td><span class="badge badge-blue">作業中</span></td>
+              <td>
+                <div>ハイヤー予約サイト改修</div>
+                <div class="client-name">CLoVER Hire 様</div>
+              </td>
+              <td>品質優先</td>
+              <td>2026/08/01</td>
+              <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">2日前<br>着手</td>
+            </tr>
+            <tr onclick="alert('完了案件のアーカイブページへ遷移します')">
+              <td><span class="badge badge-green">完了</span></td>
+              <td>
+                <div>ECサイト運用保守 (5月分)</div>
+                <div class="client-name">Lykke Hygge 様</div>
+              </td>
+              <td>納期優先</td>
+              <td>2026/05/31</td>
+              <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">2026/06/01<br>納品完了</td>
+            </tr>
+            <tr onclick="alert('完了案件のアーカイブページへ遷移します')">
+              <td><span class="badge badge-green">完了</span></td>
+              <td>
+                <div>予約システム初期構築</div>
+                <div class="client-name">French LABO. 様</div>
+              </td>
+              <td>品質優先</td>
+              <td>2026/04/30</td>
+              <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">2026/04/28<br>納品完了</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
   </main>
