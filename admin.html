@@ -35,7 +35,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* スクロールバー装飾（全体＆各コンテナ共通） */
+    /* スクロールバー装飾 */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: var(--nm-bg-dark); border-radius: 4px; box-shadow: var(--shadow-inner-dark); }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
@@ -56,29 +56,28 @@
       display: inline-block; padding: 4px 12px; background: var(--color-accent); color: #000;
       border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-bottom: 8px; letter-spacing: 0.1em;
     }
-    .header-actions { display: flex; align-items: center; gap: 24px; }
-    .btn-icon {
-      background-color: var(--nm-bg-dark); color: var(--color-sub); border: none; width: 48px; height: 48px;
-      border-radius: 50%; font-size: 1.2rem; cursor: pointer; box-shadow: var(--shadow-outer-dark);
-      transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; position: relative;
+    
+    /* ヘッダー右側（ログイン情報） */
+    .header-user-info {
+      display: flex; align-items: center; gap: 24px; font-size: 0.9rem;
     }
-    .btn-icon:hover { box-shadow: var(--shadow-inner-dark); }
-    .notification-dot {
-      position: absolute; top: 8px; right: 8px; width: 10px; height: 10px;
-      background-color: #EF4444; border-radius: 50%; border: 2px solid var(--nm-bg-dark);
+    .user-name {
+      color: var(--nm-text-main-dark); font-weight: 600; letter-spacing: 0.05em;
     }
+    .user-name span { color: var(--nm-text-light-dark); font-weight: normal; margin-right: 8px;}
+    .btn-logout {
+      background: none; border: 1px solid var(--wireframe-line-dark); color: var(--nm-text-light-dark);
+      padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-logout:hover { background: var(--nm-bg-dark); color: var(--color-sub); box-shadow: var(--shadow-inner-dark); border-color: transparent;}
 
     /* お知らせ（通知）パネル */
     .alerts-section { margin-bottom: 56px; }
-    .alerts-title { font-size: 1.2rem; font-weight: 800; color: var(--color-white); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .alerts-title { font-size: 1.2rem; font-weight: 800; color: var(--color-white); margin-bottom: 16px; }
     
-    /* スクロールコンテナ追加 */
     .alerts-scroll-container {
-      max-height: 280px; /* 約3枚分で見切れる高さ */
-      overflow-y: auto;
-      padding: 4px 8px 4px 4px; /* スクロールバーと影のための余白 */
+      max-height: 280px; overflow-y: auto; padding: 4px 8px 4px 4px;
     }
-
     .alerts-container { display: flex; flex-direction: column; gap: 16px; }
     .alert-card {
       background-color: var(--nm-bg-dark); padding: 20px 24px; border-radius: 16px;
@@ -88,26 +87,81 @@
     .alert-card:hover { transform: translateX(4px); background-color: rgba(255,255,255,0.02); }
     .alert-card.urgent { border-left-color: var(--color-accent); }
     .alert-card.new { border-left-color: #10B981; }
-
     .alert-info { display: flex; flex-direction: column; gap: 4px; }
     .alert-msg { font-size: 0.95rem; font-weight: 700; color: var(--color-white); }
     .alert-msg span { color: var(--color-sub); margin-right: 8px; }
     .alert-card.urgent .alert-msg span { color: var(--color-accent); }
     .alert-card.new .alert-msg span { color: #10B981; }
     .alert-meta { font-size: 0.8rem; color: var(--nm-text-light-dark); }
-    
     .btn-view {
       background: none; border: 1px solid var(--wireframe-line-dark); color: var(--nm-text-main-dark);
       padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
     }
     .btn-view:hover { background: var(--color-sub); color: #000; border-color: var(--color-sub); }
 
+    /* --- ガントチャート（ダークモード版） --- */
+    .gantt-wrapper { margin-bottom: 56px; }
+    .gantt-title { font-size: 1.2rem; font-weight: 800; color: var(--color-white); margin-bottom: 16px; }
+    .gantt-scroll-container {
+      max-height: 400px; overflow: auto; background: var(--nm-bg-dark);
+      border: 1px solid var(--wireframe-line-dark); border-radius: 16px; box-shadow: var(--shadow-outer-sm-dark);
+    }
+    .gantt-table { min-width: 900px; display: flex; flex-direction: column; }
+    .gantt-row { display: flex; border-bottom: 1px solid var(--wireframe-line-dark); transition: background-color 0.2s; cursor: pointer; }
+    .gantt-row:not(.header):hover { background-color: rgba(255, 255, 255, 0.02); }
+    .gantt-row:last-child { border-bottom: none; }
+    .gantt-row.header { position: sticky; top: 0; z-index: 20; background: #24282d; cursor: default; }
+
+    .gantt-cell-side {
+      width: 260px; flex-shrink: 0; padding: 24px; position: sticky; left: 0; z-index: 10;
+      background: var(--nm-bg-dark); border-right: 1px solid var(--wireframe-line-dark);
+      display: flex; flex-direction: column; justify-content: center; position: relative;
+    }
+    .gantt-row.header .gantt-cell-side { z-index: 30; background: #24282d; font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light-dark); }
+
+    .gantt-cell-time {
+      flex-grow: 1; display: grid; grid-template-columns: repeat(14, 1fr); grid-template-rows: 1fr;
+    }
+    .gantt-grid-cell { border-right: 1px solid rgba(255, 255, 255, 0.05); grid-row: 1; }
+    .gantt-date {
+      display: flex; align-items: center; justify-content: center; grid-row: 1;
+      font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light-dark); border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .task-title { font-size: 0.95rem; font-weight: 700; color: var(--color-white); margin-top: 6px; }
+    .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.65rem; font-weight: 800; width: fit-content; border: 1px solid transparent; }
+    .badge-blue { background-color: rgba(26, 90, 133, 0.3); color: var(--color-sub); border-color: var(--color-sub); }
+    .badge-yellow { background-color: rgba(255, 185, 0, 0.1); color: var(--color-accent); border-color: var(--color-accent); }
+    .badge-bw { background-color: transparent; color: var(--nm-text-main-dark); border-color: var(--nm-text-main-dark); }
+
+    .gantt-bar-wrapper { grid-row: 1; align-self: center; padding: 0 4px; z-index: 2; pointer-events: none; position: relative; }
+    .gantt-bar {
+      height: 28px; border-radius: 14px; display: flex; align-items: center; padding: 0 16px;
+      font-size: 0.75rem; font-weight: 800; border: 2px solid transparent;
+    }
+    .bg-blue { background-color: var(--color-base); color: var(--color-white); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-color: var(--color-sub); }
+    .bg-yellow { background-color: var(--color-accent); color: #000; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); }
+    .bg-bw { background-color: transparent; color: var(--nm-text-main-dark); border-color: var(--nm-text-main-dark); }
+
+    /* 新着ドットアニメーション */
+    .update-dot {
+      position: absolute; top: -6px; right: -6px; width: 14px; height: 14px;
+      background-color: #EF4444; border-radius: 50%; border: 2px solid var(--nm-bg-dark);
+      animation: pulse 2s infinite; z-index: 5;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+
     /* 管理用ダッシュボード（2カラム） */
     .admin-controls { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; margin-bottom: 56px; }
     .nm-card-dark { background-color: var(--nm-bg-dark); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-outer-dark); }
     .control-title { font-size: 1.1rem; font-weight: 700; color: var(--color-white); margin-bottom: 24px; letter-spacing: 0.05em; }
 
-    /* 稼働状況設定（4段階） */
+    /* 稼働状況設定 */
     .status-toggle { 
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; 
       background: var(--shadow-inner-dark); border-radius: 12px; padding: 8px; box-shadow: var(--shadow-inner-dark); 
@@ -124,7 +178,6 @@
     .status-toggle input[value="busy"]:checked + label { color: var(--color-accent); border: 1px solid var(--color-accent);}
     .status-toggle input[value="stop"]:checked + label { color: #EF4444; border: 1px solid #EF4444;}
 
-    /* 最短着手日数の入力 */
     .input-group { display: flex; align-items: center; gap: 12px; }
     .input-group label { font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light-dark); }
     .input-number {
@@ -134,7 +187,7 @@
     }
     .input-number:focus { border-color: var(--color-sub); }
 
-    /* 全体集計HUD（4項目に変更） */
+    /* 全体集計HUD */
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; height: 100%; align-content: center; }
     .stat-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 8px; border-right: 1px dashed var(--wireframe-line-dark); }
     .stat-box:last-child { border-right: none; }
@@ -142,12 +195,9 @@
     .stat-label { font-size: 0.7rem; font-weight: 600; color: var(--nm-text-light-dark); text-transform: uppercase; letter-spacing: 0.05em; text-align: center;}
 
     /* 全案件リスト管理テーブル */
-    .table-wrapper {
-      background-color: var(--nm-bg-dark); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-outer-dark);
-    }
+    .table-wrapper { background-color: var(--nm-bg-dark); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-outer-dark); }
     .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;}
     
-    /* セグメント＆検索エリア */
     .filter-area { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; width: 100%; }
     .filter-select {
       background: var(--nm-bg-dark); border: 1px solid var(--wireframe-line-dark); padding: 12px 16px; border-radius: 20px;
@@ -161,23 +211,13 @@
     }
     .search-bar:focus { border-color: var(--color-sub); }
 
-    /* テーブルのスクロールコンテナ */
-    .table-scroll-container {
-      max-height: 500px;
-      overflow-y: auto;
-      border: 1px solid var(--wireframe-line-dark);
-      border-radius: 12px;
-    }
-
+    .table-scroll-container { max-height: 500px; overflow-y: auto; border: 1px solid var(--wireframe-line-dark); border-radius: 12px; }
     table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; }
-    
-    /* ヘッダー固定 */
     thead th {
-      position: sticky; top: 0; z-index: 10; background-color: #24282d; /* スクロール時に透けないように少し濃く */
+      position: sticky; top: 0; z-index: 10; background-color: #24282d;
       padding: 16px 24px; font-size: 0.8rem; font-weight: 600; color: var(--nm-text-light-dark);
       text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--wireframe-line-dark);
     }
-
     td {
       padding: 20px 24px; font-size: 0.95rem; font-weight: 500; color: var(--color-white);
       border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle; cursor: pointer; transition: background 0.2s;
@@ -186,17 +226,12 @@
     
     .client-name { font-size: 0.8rem; color: var(--nm-text-light-dark); margin-top: 4px; }
     .date-warn { color: var(--color-accent); font-weight: bold; }
-
-    /* バッジ */
-    .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; border: 1px solid transparent; white-space: nowrap;}
-    .badge-blue { background-color: rgba(57, 218, 255, 0.1); color: var(--color-sub); border-color: var(--color-sub); }
-    .badge-yellow { background-color: rgba(255, 185, 0, 0.1); color: var(--color-accent); border-color: var(--color-accent); }
-    .badge-bw { background-color: transparent; color: var(--nm-text-main-dark); border-color: var(--nm-text-main-dark); }
     .badge-green { background-color: rgba(16, 185, 129, 0.1); color: #10B981; border-color: #10B981; }
 
     @media screen and (max-width: 900px) {
       .admin-controls { grid-template-columns: 1fr; gap: 24px; }
       .header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .header-user-info { width: 100%; justify-content: space-between; }
       .alerts-section { margin-bottom: 40px; }
       .alert-card { flex-direction: column; align-items: flex-start; gap: 16px; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
@@ -216,14 +251,15 @@
           MARKETING <br><strong>PORTAL.</strong>
         </div>
       </div>
-      <div class="header-actions">
-        <button class="btn-icon" title="通知">🔔<span class="notification-dot"></span></button>
-        <button class="btn-icon" title="ログアウト">🚪</button>
+      
+      <div class="header-user-info">
+        <div class="user-name"><span>Logged in as:</span>小椋 聡介</div>
+        <button class="btn-logout" onclick="alert('ログアウトします')">Logout</button>
       </div>
     </header>
 
     <section class="alerts-section">
-      <h2 class="alerts-title">📣 Updates / 最新のアクション</h2>
+      <h2 class="alerts-title">Updates / 最新のアクション</h2>
       <div class="alerts-scroll-container">
         <div class="alerts-container">
           <div class="alert-card new" onclick="alert('案件詳細ページへ移動します')">
@@ -240,20 +276,68 @@
             </div>
             <button class="btn-view">ファイルを見る</button>
           </div>
-          <div class="alert-card" onclick="alert('案件詳細ページへ移動します')">
-            <div class="alert-info">
-              <div class="alert-msg"><span>[MTG]</span> オンラインMTGのリクエストを受信しました。</div>
-              <div class="alert-meta">「ハイヤー予約サイト構築」 - CLoVER Hire 様 (2 hours ago)</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gantt-wrapper">
+      <h2 class="gantt-title">Active Projects Timeline</h2>
+      <div class="gantt-scroll-container">
+        <div class="gantt-table">
+          
+          <div class="gantt-row header">
+            <div class="gantt-cell-side">Project & Status</div>
+            <div class="gantt-cell-time">
+              <div class="gantt-date" style="grid-column: 1;">17</div><div class="gantt-date" style="grid-column: 2;">18</div>
+              <div class="gantt-date" style="grid-column: 3;">19</div><div class="gantt-date" style="grid-column: 4;">20</div>
+              <div class="gantt-date" style="grid-column: 5;">21</div><div class="gantt-date" style="grid-column: 6;">22</div>
+              <div class="gantt-date" style="grid-column: 7;">23</div><div class="gantt-date" style="grid-column: 8;">24</div>
+              <div class="gantt-date" style="grid-column: 9;">25</div><div class="gantt-date" style="grid-column: 10;">26</div>
+              <div class="gantt-date" style="grid-column: 11;">27</div><div class="gantt-date" style="grid-column: 12;">28</div>
+              <div class="gantt-date" style="grid-column: 13;">29</div><div class="gantt-date" style="grid-column: 14;">30</div>
             </div>
-            <button class="btn-view">日程を調整</button>
           </div>
-          <div class="alert-card" onclick="alert('案件詳細ページへ移動します')">
-            <div class="alert-info">
-              <div class="alert-msg"><span>[MSG]</span> 新着メッセージがあります。</div>
-              <div class="alert-meta">「社内報 7月号デザイン」 - 広報部 様 (Yesterday)</div>
+
+          <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
+            <div class="gantt-cell-side">
+              <span class="badge badge-blue">作業中</span>
+              <div class="task-title">秋期キャンペーンLP制作</div>
             </div>
-            <button class="btn-view">返信する</button>
+            <div class="gantt-cell-time">
+              <div class="gantt-grid-cell" style="grid-column: 1;"></div><div class="gantt-grid-cell" style="grid-column: 2;"></div><div class="gantt-grid-cell" style="grid-column: 3;"></div><div class="gantt-grid-cell" style="grid-column: 4;"></div><div class="gantt-grid-cell" style="grid-column: 5;"></div><div class="gantt-grid-cell" style="grid-column: 6;"></div><div class="gantt-grid-cell" style="grid-column: 7;"></div><div class="gantt-grid-cell" style="grid-column: 8;"></div><div class="gantt-grid-cell" style="grid-column: 9;"></div><div class="gantt-grid-cell" style="grid-column: 10;"></div><div class="gantt-grid-cell" style="grid-column: 11;"></div><div class="gantt-grid-cell" style="grid-column: 12;"></div><div class="gantt-grid-cell" style="grid-column: 13;"></div><div class="gantt-grid-cell" style="grid-column: 14;"></div>
+              <div class="gantt-bar-wrapper" style="grid-column: 1 / 9;">
+                <div class="update-dot" title="新着アクションあり"></div>
+                <div class="gantt-bar bg-blue" style="width: 100%;">デザイン・コーディング</div>
+              </div>
+            </div>
           </div>
+
+          <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
+            <div class="gantt-cell-side">
+              <span class="badge badge-yellow">先方確認中</span>
+              <div class="task-title">展示会パンフレット改修</div>
+            </div>
+            <div class="gantt-cell-time">
+              <div class="gantt-grid-cell" style="grid-column: 1;"></div><div class="gantt-grid-cell" style="grid-column: 2;"></div><div class="gantt-grid-cell" style="grid-column: 3;"></div><div class="gantt-grid-cell" style="grid-column: 4;"></div><div class="gantt-grid-cell" style="grid-column: 5;"></div><div class="gantt-grid-cell" style="grid-column: 6;"></div><div class="gantt-grid-cell" style="grid-column: 7;"></div><div class="gantt-grid-cell" style="grid-column: 8;"></div><div class="gantt-grid-cell" style="grid-column: 9;"></div><div class="gantt-grid-cell" style="grid-column: 10;"></div><div class="gantt-grid-cell" style="grid-column: 11;"></div><div class="gantt-grid-cell" style="grid-column: 12;"></div><div class="gantt-grid-cell" style="grid-column: 13;"></div><div class="gantt-grid-cell" style="grid-column: 14;"></div>
+              <div class="gantt-bar-wrapper" style="grid-column: 4 / 12;">
+                <div class="gantt-bar bg-yellow" style="width: 100%;">初稿提出済</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
+            <div class="gantt-cell-side">
+              <span class="badge badge-bw">未着手</span>
+              <div class="task-title">新規事業ロゴデザイン</div>
+            </div>
+            <div class="gantt-cell-time">
+              <div class="gantt-grid-cell" style="grid-column: 1;"></div><div class="gantt-grid-cell" style="grid-column: 2;"></div><div class="gantt-grid-cell" style="grid-column: 3;"></div><div class="gantt-grid-cell" style="grid-column: 4;"></div><div class="gantt-grid-cell" style="grid-column: 5;"></div><div class="gantt-grid-cell" style="grid-column: 6;"></div><div class="gantt-grid-cell" style="grid-column: 7;"></div><div class="gantt-grid-cell" style="grid-column: 8;"></div><div class="gantt-grid-cell" style="grid-column: 9;"></div><div class="gantt-grid-cell" style="grid-column: 10;"></div><div class="gantt-grid-cell" style="grid-column: 11;"></div><div class="gantt-grid-cell" style="grid-column: 12;"></div><div class="gantt-grid-cell" style="grid-column: 13;"></div><div class="gantt-grid-cell" style="grid-column: 14;"></div>
+              <div class="gantt-bar-wrapper" style="grid-column: 10 / 15;">
+                <div class="gantt-bar bg-bw" style="width: 100%;">着手予定</div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -265,7 +349,6 @@
         <p style="font-size: 0.8rem; color: var(--nm-text-light-dark); margin-bottom: 16px;">
           クライアント画面に表示される受付状況と、最短着手までの日数を設定します。
         </p>
-        
         <div class="status-toggle">
           <input type="radio" id="st_normal" name="work_status" value="normal">
           <label for="st_normal">通常受付</label>
@@ -279,7 +362,6 @@
           <input type="radio" id="st_stop" name="work_status" value="stop">
           <label for="st_stop">新規受付停止</label>
         </div>
-
         <div class="input-group">
           <label>最短着手可能日（依頼から）</label>
           <input type="number" class="input-number" value="8" min="0">
@@ -324,7 +406,6 @@
           <option value="lykke">Lykke Hygge 様</option>
           <option value="other">社内・その他</option>
         </select>
-        
         <select class="filter-select" id="filterStatus">
           <option value="">全てのステータス</option>
           <option value="ongoing">作業中</option>
@@ -332,7 +413,6 @@
           <option value="waiting">未着手</option>
           <option value="done">完了</option>
         </select>
-        
         <input type="text" class="search-bar" placeholder="案件名で検索...">
       </div>
 
@@ -367,46 +447,6 @@
               <td>納期優先</td>
               <td>2026/07/10</td>
               <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">昨日 14:30<br>メッセージ送信</td>
-            </tr>
-            <tr onclick="alert('管理者用の案件詳細ページへ遷移します')">
-              <td><span class="badge badge-bw">未着手</span></td>
-              <td>
-                <div>展示会用ノベルティデザイン</div>
-                <div class="client-name">社内・その他 (鈴木一郎)</div>
-              </td>
-              <td>納期優先</td>
-              <td>2026/07/15</td>
-              <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">本日 10:20<br>新規受付</td>
-            </tr>
-            <tr onclick="alert('管理者用の案件詳細ページへ遷移します')">
-              <td><span class="badge badge-blue">作業中</span></td>
-              <td>
-                <div>ハイヤー予約サイト改修</div>
-                <div class="client-name">CLoVER Hire 様</div>
-              </td>
-              <td>品質優先</td>
-              <td>2026/08/01</td>
-              <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">2日前<br>着手</td>
-            </tr>
-            <tr onclick="alert('完了案件のアーカイブページへ遷移します')">
-              <td><span class="badge badge-green">完了</span></td>
-              <td>
-                <div>ECサイト運用保守 (5月分)</div>
-                <div class="client-name">Lykke Hygge 様</div>
-              </td>
-              <td>納期優先</td>
-              <td>2026/05/31</td>
-              <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">2026/06/01<br>納品完了</td>
-            </tr>
-            <tr onclick="alert('完了案件のアーカイブページへ遷移します')">
-              <td><span class="badge badge-green">完了</span></td>
-              <td>
-                <div>予約システム初期構築</div>
-                <div class="client-name">French LABO. 様</div>
-              </td>
-              <td>品質優先</td>
-              <td>2026/04/30</td>
-              <td style="color: var(--nm-text-light-dark); font-size: 0.8rem;">2026/04/28<br>納品完了</td>
             </tr>
           </tbody>
         </table>
