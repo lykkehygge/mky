@@ -7,11 +7,11 @@
   <style>
     /* ニューモーフィズム & ブランドカラー設定 */
     :root {
-      --color-base: #00385D;
-      --color-sub: #39DAFF;
-      --color-accent: #FFB900;
-      --color-black: #000000;
-      --color-white: #ffffff;
+      --color-base: #00385D;   /* 青（作業中） */
+      --color-sub: #39DAFF;    
+      --color-accent: #FFB900; /* 黄色（先方確認中） */
+      --color-black: #000000;  /* 白黒（未着手） */
+      --color-white: #ffffff;  /* 白黒（未着手） */
 
       --nm-bg: #EFF2F9;
       --nm-text-main: #6E7F8D;
@@ -20,7 +20,6 @@
       
       --shadow-outer: 8px 8px 16px rgba(110, 127, 141, 0.2), -8px -8px 16px rgba(255, 255, 255, 1);
       --shadow-outer-sm: 4px 4px 8px rgba(110, 127, 141, 0.15), -4px -4px 8px rgba(255, 255, 255, 1);
-      --shadow-inner: inset 4px 4px 8px rgba(110, 127, 141, 0.15), inset -4px -4px 8px rgba(255, 255, 255, 1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,67 +28,55 @@
       font-family: 'Avenir Next', 'Helvetica Neue', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
       background-color: var(--nm-bg);
       color: var(--nm-text-main);
-      display: flex;
       height: 100vh;
-      overflow: hidden;
+      overflow-y: auto;
+      overflow-x: hidden;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* サイドバー */
-    .sidebar {
-      width: 260px;
-      padding: 56px 32px;
+    /* メインコンテンツ（サイドバー削除による全幅最適化） */
+    .main-content {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ヘッダー周り */
+    .header {
       display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      z-index: 100;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+      border-bottom: 1px solid var(--wireframe-line);
+      padding-bottom: 24px;
     }
 
     .brand {
       font-size: 1.8rem;
       font-weight: 300;
       color: var(--color-base);
-      margin-bottom: 64px;
       letter-spacing: 0.1em;
-      line-height: 1.2;
+      line-height: 1.1;
     }
     .brand strong { font-weight: 800; display: block; }
 
-    .nav-menu { list-style: none; flex-grow: 1; }
-    .nav-item { margin-bottom: 24px; }
-    .nav-link {
-      display: flex; align-items: center; padding: 16px 24px; color: var(--nm-text-main);
-      text-decoration: none; border-radius: 16px; font-size: 0.95rem; font-weight: 600;
-      letter-spacing: 0.05em; transition: all 0.3s ease;
-    }
-    .nav-link.active { box-shadow: var(--shadow-inner); color: var(--color-base); }
-    .nav-link:hover:not(.active) { box-shadow: var(--shadow-outer-sm); color: var(--color-base); }
-
-    /* メインコンテンツ */
-    .main-content {
-      flex-grow: 1;
-      padding: 56px 56px 56px 24px;
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-
-    .header {
-      display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 56px;
-    }
-    .page-title {
-      font-size: 3.5rem; font-weight: 800; color: var(--color-black); line-height: 1; letter-spacing: -0.02em;
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
 
     .btn-primary {
-      background-color: var(--nm-bg); color: var(--color-base); border: none; padding: 16px 40px;
-      border-radius: 30px; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em;
+      background-color: var(--nm-bg); color: var(--color-base); border: none; padding: 16px 32px;
+      border-radius: 30px; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.05em;
       cursor: pointer; box-shadow: var(--shadow-outer); transition: all 0.2s ease;
-      display: flex; align-items: center; gap: 12px;
+      display: flex; align-items: center; gap: 8px;
     }
-    .btn-primary:hover { box-shadow: var(--shadow-inner); color: var(--color-sub); }
+    .btn-primary:hover { transform: translateY(2px); box-shadow: var(--shadow-outer-sm); }
 
-    /* --- お洒落なHUDパラメーター（画像インスパイア） --- */
+    /* HUDパラメーター */
     .hud-params {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -98,167 +85,100 @@
       border: 1px solid var(--wireframe-line);
       border-radius: 12px;
       margin-bottom: 56px;
-      position: relative;
       overflow: hidden;
       box-shadow: var(--shadow-outer-sm);
     }
 
     .hud-box {
-      background: var(--nm-bg);
-      padding: 32px 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
+      background: var(--nm-bg); padding: 32px 24px; display: flex; flex-direction: column; justify-content: space-between;
     }
-
     .hud-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      color: var(--nm-text-light);
-      margin-bottom: 16px;
-      text-transform: uppercase;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; color: var(--nm-text-light);
+      margin-bottom: 16px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;
     }
+    .hud-label::after { content: "＋"; font-size: 0.8rem; color: var(--wireframe-line); }
+    .hud-value { font-size: 2.5rem; font-weight: 300; color: var(--color-base); display: flex; align-items: baseline; gap: 8px; line-height: 1; }
+    .hud-unit { font-size: 0.85rem; font-weight: 500; color: var(--nm-text-main); letter-spacing: 0.1em; text-transform: uppercase; }
+    .status-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background-color: var(--color-sub); box-shadow: 0 0 10px var(--color-sub); margin-right: 8px;}
 
-    /* 装飾用の極小クロスヘア */
-    .hud-label::after {
-      content: "＋";
-      font-size: 0.8rem;
-      color: var(--wireframe-line);
-    }
-
-    .hud-value {
-      font-size: 2.5rem;
-      font-weight: 300;
-      color: var(--color-base);
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      line-height: 1;
-    }
-
-    .hud-unit {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--nm-text-main);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .status-dot {
-      display: inline-block; width: 12px; height: 12px; border-radius: 50%;
-      background-color: var(--color-accent); margin-right: 8px;
-      box-shadow: 0 0 10px var(--color-accent);
-    }
-
-    /* --- 上下左右スクロール可能なガントチャート --- */
-    .gantt-wrapper {
-      margin-bottom: 80px;
-    }
+    /* ガントチャート（上下左右スクロール対応・ズレ修正版） */
+    .gantt-wrapper { margin-bottom: 80px; }
+    .gantt-title { font-size: 1.2rem; font-weight: 800; color: var(--color-base); letter-spacing: 0.05em; margin-bottom: 24px; }
     
-    .gantt-title {
-      font-size: 1.2rem; font-weight: 800; color: var(--color-base); letter-spacing: 0.05em;
-      margin-bottom: 24px; padding-left: 8px;
-    }
-
     .gantt-scroll-container {
-      max-height: 450px; /* 縦方向のスクロール枠 */
-      max-width: 100%;   /* 横方向のスクロール枠 */
-      overflow: auto;
-      background: var(--nm-bg);
-      border: 1px solid var(--wireframe-line);
-      border-radius: 16px;
-      box-shadow: var(--shadow-outer-sm);
-      position: relative;
+      max-height: 500px; overflow: auto; background: var(--nm-bg);
+      border: 1px solid var(--wireframe-line); border-radius: 16px; box-shadow: var(--shadow-outer-sm);
     }
 
-    .gantt-table {
-      min-width: 900px; /* これ以下には縮まない（横スクロール発生） */
-      display: flex;
-      flex-direction: column;
-    }
-
-    .gantt-row {
-      display: flex;
-      border-bottom: 1px solid var(--wireframe-line);
-    }
+    .gantt-table { min-width: 900px; display: flex; flex-direction: column; }
+    .gantt-row { display: flex; border-bottom: 1px solid var(--wireframe-line); transition: background-color 0.2s; cursor: pointer; }
+    .gantt-row:not(.header):hover { background-color: rgba(0, 56, 93, 0.03); }
     .gantt-row:last-child { border-bottom: none; }
+    
+    /* ヘッダー固定 */
+    .gantt-row.header { position: sticky; top: 0; z-index: 20; background: var(--nm-bg); cursor: default; }
 
-    /* ヘッダー行（下にスクロールしても上部に固定） */
-    .gantt-row.header {
-      position: sticky; top: 0; z-index: 20; background: var(--nm-bg);
-      box-shadow: 0 4px 12px rgba(110,127,141,0.05);
-    }
-
-    /* サイドバー列（右にスクロールしても左部に固定） */
+    /* サイドバー列固定 */
     .gantt-cell-side {
-      width: 280px; flex-shrink: 0; padding: 24px;
-      position: sticky; left: 0; z-index: 10;
-      background: var(--nm-bg);
-      border-right: 1px solid var(--wireframe-line);
+      width: 260px; flex-shrink: 0; padding: 24px; position: sticky; left: 0; z-index: 10;
+      background: var(--nm-bg); border-right: 1px solid var(--wireframe-line);
       display: flex; flex-direction: column; justify-content: center;
     }
-    
-    /* 左上の角（上下左右どちらにスクロールしても固定） */
-    .gantt-row.header .gantt-cell-side {
-      z-index: 30; font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light);
-    }
+    .gantt-row.header .gantt-cell-side { z-index: 30; font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light); }
 
-    /* タイムライン列 */
+    /* タイムライン列（Gridによるズレ防止設計） */
     .gantt-cell-time {
       flex-grow: 1;
       display: grid;
-      grid-template-columns: repeat(14, 1fr); /* 14日間 */
-      /* 背景の縦線 */
-      background-image: linear-gradient(to right, transparent calc(100% - 1px), rgba(110, 127, 141, 0.1) calc(100% - 1px));
-      background-size: calc(100% / 14) 100%;
+      grid-template-columns: repeat(14, 1fr);
+      grid-template-rows: 1fr;
     }
 
-    /* 日付ヘッダー */
+    /* 日付と背景グリッド線 */
+    .gantt-grid-cell { border-right: 1px solid rgba(110, 127, 141, 0.15); grid-row: 1; }
     .gantt-date {
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light); padding: 16px 0;
+      display: flex; align-items: center; justify-content: center; grid-row: 1;
+      font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light); border-right: 1px solid rgba(110, 127, 141, 0.15);
     }
 
-    /* タスクのタイトルとバッジ */
+    /* タスク装飾 */
     .task-title { font-size: 0.95rem; font-weight: 700; color: var(--color-base); margin-top: 6px; }
-    .badge { padding: 4px 12px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; width: fit-content; border: 1px solid var(--wireframe-line); }
-    .badge-ongoing { color: var(--color-sub); }
-    .badge-review { color: var(--color-accent); }
-    .badge-waiting { color: var(--nm-text-light); }
-
-    /* ガントバー */
-    .gantt-bar-wrapper {
-      padding: 12px 0;
-      display: flex; align-items: center;
-    }
+    .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.65rem; font-weight: 800; width: fit-content; border: 1px solid transparent; }
+    
+    .gantt-bar-wrapper { grid-row: 1; align-self: center; padding: 0 4px; z-index: 2; pointer-events: none; }
     .gantt-bar {
-      height: 32px; border-radius: 16px; display: flex; align-items: center; padding: 0 16px;
-      font-size: 0.75rem; font-weight: 800; cursor: pointer; transition: transform 0.2s;
-      margin: 0 4px;
+      height: 28px; border-radius: 14px; display: flex; align-items: center; padding: 0 16px;
+      font-size: 0.75rem; font-weight: 800; border: 2px solid transparent;
     }
-    .gantt-bar:hover { transform: scale(1.02); }
 
-    .bg-sub { background-color: var(--color-sub); color: var(--color-base); box-shadow: 0 4px 12px rgba(57, 218, 255, 0.4); }
-    .bg-accent { background-color: var(--color-accent); color: var(--color-black); box-shadow: 0 4px 12px rgba(255, 185, 0, 0.4); }
-    .bg-base { background-color: var(--color-base); color: var(--color-white); box-shadow: 0 4px 12px rgba(0, 56, 93, 0.3); }
+    /* 3色のカラールール適用 */
+    /* 1. 作業中（青） */
+    .badge-blue { background-color: var(--color-base); color: var(--color-white); }
+    .bg-blue { background-color: var(--color-base); color: var(--color-white); box-shadow: 0 4px 8px rgba(0, 56, 93, 0.3); }
+    
+    /* 2. 先方確認中（黄） */
+    .badge-yellow { background-color: var(--color-accent); color: var(--color-black); }
+    .bg-yellow { background-color: var(--color-accent); color: var(--color-black); box-shadow: 0 4px 8px rgba(255, 185, 0, 0.3); }
+    
+    /* 3. 未着手（白黒） */
+    .badge-bw { background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black); }
+    .bg-bw { background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black); }
 
-    /* --- 完了案件ギャラリー --- */
-    .gallery-wrapper { padding: 0; overflow: hidden; border-radius: 24px; margin-bottom: 80px; }
+
+    /* 完了案件ギャラリー（グラスモーフィズム） */
+    .gallery-wrapper { overflow: hidden; border-radius: 24px; margin-bottom: 80px; }
     .gallery-header { padding: 32px 40px; font-size: 1.2rem; font-weight: 800; color: var(--color-base); letter-spacing: 0.05em; background-color: var(--nm-bg); border-bottom: 2px solid rgba(255,255,255,0.5); }
+    
     .slideshow-container { position: relative; width: 100%; height: 500px; background-color: var(--color-black); }
-    .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s ease-in-out; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; filter: grayscale(100%); }
+    .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s ease-in-out; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; filter: grayscale(100%); padding: 24px; }
     .slide.active { opacity: 1; filter: grayscale(100%) contrast(1.1); }
 
-    .glass-card { background: rgba(15, 23, 30, 0.5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 48px; width: 90%; max-width: 500px; color: var(--color-white); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); transform: translateY(20px); transition: transform 1s ease-out; text-align: center; }
+    .glass-card { background: rgba(15, 23, 30, 0.5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 48px; width: 100%; max-width: 500px; color: var(--color-white); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); transform: translateY(20px); transition: transform 1s ease-out; text-align: center; }
     .slide.active .glass-card { transform: translateY(0); }
     .glass-card .sub-title { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.2em; color: var(--color-sub); text-transform: uppercase; margin-bottom: 16px; }
     .glass-card h3 { font-size: 1.6rem; font-weight: 300; letter-spacing: 0.1em; margin-bottom: 24px; }
     .glass-card .line { width: 100%; height: 1px; background: rgba(255, 255, 255, 0.2); margin: 24px 0; }
+    
     .glass-list { list-style: none; text-align: left; }
     .glass-list li { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 0.9rem; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 8px; }
     .glass-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -269,51 +189,28 @@
     .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s ease; }
     .dot.active { background: var(--color-sub); transform: scale(1.5); }
 
-    /* --- スマートフォン（SP）レスポンシブ対応 --- */
+    /* スマートフォン（SP）レスポンシブ対応 */
     @media screen and (max-width: 768px) {
-      body {
-        flex-direction: column;
-        height: auto;
-        overflow-y: auto;
-      }
-
-      /* サイドバーを上部ヘッダーに変更 */
-      .sidebar {
-        width: 100%;
-        padding: 24px 24px 16px;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .brand { margin-bottom: 0; font-size: 1.4rem; }
+      .main-content { padding: 24px 16px 40px; }
+      
+      .header { flex-direction: column; align-items: flex-start; gap: 24px; padding-bottom: 24px; }
+      .brand { font-size: 1.6rem; }
       .brand strong { display: inline; }
-      .nav-menu { display: none; } /* SPではメニューを省略し画面を広く使う */
-
-      .main-content { padding: 0 16px 40px; }
-
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 24px;
-        margin-bottom: 40px;
-      }
-      .page-title { font-size: 2.2rem; }
       .btn-primary { width: 100%; justify-content: center; }
 
-      /* HUDパラメーターを2列に変更 */
       .hud-params { grid-template-columns: 1fr 1fr; margin-bottom: 40px; }
-      .hud-box { padding: 24px 16px; }
+      .hud-box { padding: 20px 16px; }
       .hud-value { font-size: 2rem; }
-      .hud-unit { font-size: 0.7rem; }
 
-      /* ガントチャートのSP調整 */
+      /* ガントチャートのSP対応 */
       .gantt-cell-side { width: 160px; padding: 16px; }
       .task-title { font-size: 0.85rem; }
 
-      /* ギャラリーのSP調整 */
-      .slideshow-container { height: 400px; }
-      .glass-card { padding: 32px 24px; }
-      .glass-card h3 { font-size: 1.2rem; }
+      /* SP時のカード飛び出し防止（高さを自動調整して余白を確保） */
+      .slideshow-container { height: 600px; }
+      .slide { padding: 16px; }
+      .glass-card { padding: 32px 20px; width: 100%; }
+      .glass-card h3 { font-size: 1.3rem; }
       .glass-list li { flex-direction: column; align-items: flex-start; gap: 4px; }
       .glass-list .value { text-align: left; }
     }
@@ -321,28 +218,21 @@
 </head>
 <body>
 
-  <!-- サイドバー（SP時はトップヘッダー） -->
-  <aside class="sidebar">
-    <div class="brand">
-      Marketing <br class="sp-none"><strong>Portal.</strong>
-    </div>
-    <ul class="nav-menu">
-      <li class="nav-item"><a href="#" class="nav-link active">Dashboard</a></li>
-      <li class="nav-item"><a href="#" class="nav-link">Projects</a></li>
-      <li class="nav-item"><a href="#" class="nav-link">Files</a></li>
-    </ul>
-  </aside>
-
-  <!-- メインコンテンツ -->
   <main class="main-content">
+    
+    <!-- ヘッダー（ブランドロゴ統合） -->
     <header class="header">
-      <h1 class="page-title">Dashboard</h1>
-      <button class="btn-primary" onclick="alert('依頼フォームを開きます')">
-        <span style="font-size: 1.4rem; line-height: 1;">＋</span> New Request
-      </button>
+      <div class="brand">
+        MARKETING <br class="sp-none"><strong>PORTAL.</strong>
+      </div>
+      <div class="header-actions">
+        <button class="btn-primary" onclick="alert('依頼フォームを開きます')">
+          <span style="font-size: 1.4rem; line-height: 1;">＋</span> New Request
+        </button>
+      </div>
     </header>
 
-    <!-- お洒落なHUD風パラメーター -->
+    <!-- HUDパラメーター -->
     <section class="hud-params">
       <div class="hud-box">
         <div class="hud-label">Active Prj</div>
@@ -359,12 +249,12 @@
       <div class="hud-box">
         <div class="hud-label">System Status</div>
         <div class="hud-value" style="font-size: 1.4rem; font-weight: 600;">
-          <span class="status-dot"></span>Moderate
+          <span class="status-dot"></span>Normal
         </div>
       </div>
     </section>
 
-    <!-- 上下左右スクロール可能なガントチャート -->
+    <!-- スクロール可能なガントチャート（ズレ防止グリッド版・クリックで遷移） -->
     <section class="gantt-wrapper">
       <h2 class="gantt-title">Active Projects</h2>
       <div class="gantt-scroll-container">
@@ -374,69 +264,70 @@
           <div class="gantt-row header">
             <div class="gantt-cell-side">Project & Status</div>
             <div class="gantt-cell-time">
-              <div class="gantt-date">17</div><div class="gantt-date">18</div><div class="gantt-date">19</div><div class="gantt-date">20</div><div class="gantt-date">21</div><div class="gantt-date">22</div><div class="gantt-date">23</div><div class="gantt-date">24</div><div class="gantt-date">25</div><div class="gantt-date">26</div><div class="gantt-date">27</div><div class="gantt-date">28</div><div class="gantt-date">29</div><div class="gantt-date">30</div>
+              <!-- 14日分の日付 -->
+              <div class="gantt-date" style="grid-column: 1;">17</div><div class="gantt-date" style="grid-column: 2;">18</div>
+              <div class="gantt-date" style="grid-column: 3;">19</div><div class="gantt-date" style="grid-column: 4;">20</div>
+              <div class="gantt-date" style="grid-column: 5;">21</div><div class="gantt-date" style="grid-column: 6;">22</div>
+              <div class="gantt-date" style="grid-column: 7;">23</div><div class="gantt-date" style="grid-column: 8;">24</div>
+              <div class="gantt-date" style="grid-column: 9;">25</div><div class="gantt-date" style="grid-column: 10;">26</div>
+              <div class="gantt-date" style="grid-column: 11;">27</div><div class="gantt-date" style="grid-column: 12;">28</div>
+              <div class="gantt-date" style="grid-column: 13;">29</div><div class="gantt-date" style="grid-column: 14;">30</div>
             </div>
           </div>
 
-          <!-- タスク行1 -->
-          <div class="gantt-row">
+          <!-- タスク行1：作業中（青） -->
+          <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
             <div class="gantt-cell-side">
-              <span class="badge badge-ongoing">In Progress</span>
+              <span class="badge badge-blue">作業中</span>
               <div class="task-title">秋期キャンペーンLP制作</div>
             </div>
             <div class="gantt-cell-time">
+              <div class="gantt-grid-cell" style="grid-column: 1;"></div><div class="gantt-grid-cell" style="grid-column: 2;"></div><div class="gantt-grid-cell" style="grid-column: 3;"></div><div class="gantt-grid-cell" style="grid-column: 4;"></div><div class="gantt-grid-cell" style="grid-column: 5;"></div><div class="gantt-grid-cell" style="grid-column: 6;"></div><div class="gantt-grid-cell" style="grid-column: 7;"></div><div class="gantt-grid-cell" style="grid-column: 8;"></div><div class="gantt-grid-cell" style="grid-column: 9;"></div><div class="gantt-grid-cell" style="grid-column: 10;"></div><div class="gantt-grid-cell" style="grid-column: 11;"></div><div class="gantt-grid-cell" style="grid-column: 12;"></div><div class="gantt-grid-cell" style="grid-column: 13;"></div><div class="gantt-grid-cell" style="grid-column: 14;"></div>
+              <!-- バーの配置 -->
               <div class="gantt-bar-wrapper" style="grid-column: 1 / 9;">
-                <div class="gantt-bar bg-sub" style="width: 100%;">デザイン・コーディング</div>
+                <div class="gantt-bar bg-blue" style="width: 100%;">デザイン・コーディング</div>
               </div>
             </div>
           </div>
 
-          <!-- タスク行2 -->
-          <div class="gantt-row">
+          <!-- タスク行2：先方確認中（黄色） -->
+          <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
             <div class="gantt-cell-side">
-              <span class="badge badge-review">Review</span>
+              <span class="badge badge-yellow">先方確認中</span>
               <div class="task-title">展示会パンフレット改修</div>
             </div>
             <div class="gantt-cell-time">
+              <div class="gantt-grid-cell" style="grid-column: 1;"></div><div class="gantt-grid-cell" style="grid-column: 2;"></div><div class="gantt-grid-cell" style="grid-column: 3;"></div><div class="gantt-grid-cell" style="grid-column: 4;"></div><div class="gantt-grid-cell" style="grid-column: 5;"></div><div class="gantt-grid-cell" style="grid-column: 6;"></div><div class="gantt-grid-cell" style="grid-column: 7;"></div><div class="gantt-grid-cell" style="grid-column: 8;"></div><div class="gantt-grid-cell" style="grid-column: 9;"></div><div class="gantt-grid-cell" style="grid-column: 10;"></div><div class="gantt-grid-cell" style="grid-column: 11;"></div><div class="gantt-grid-cell" style="grid-column: 12;"></div><div class="gantt-grid-cell" style="grid-column: 13;"></div><div class="gantt-grid-cell" style="grid-column: 14;"></div>
               <div class="gantt-bar-wrapper" style="grid-column: 4 / 12;">
-                <div class="gantt-bar bg-accent" style="width: 100%;">初稿提出・先方確認中</div>
+                <div class="gantt-bar bg-yellow" style="width: 100%;">初稿提出済</div>
               </div>
             </div>
           </div>
 
-          <!-- タスク行3 -->
-          <div class="gantt-row">
+          <!-- タスク行3：未着手（白黒） -->
+          <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
             <div class="gantt-cell-side">
-              <span class="badge badge-waiting">Waiting</span>
+              <span class="badge badge-bw">未着手</span>
               <div class="task-title">新規事業ロゴデザイン</div>
             </div>
             <div class="gantt-cell-time">
-              <div class="gantt-bar-wrapper" style="grid-column: 9 / 15;">
-                <div class="gantt-bar bg-base" style="width: 100%;">着手予定</div>
+              <div class="gantt-grid-cell" style="grid-column: 1;"></div><div class="gantt-grid-cell" style="grid-column: 2;"></div><div class="gantt-grid-cell" style="grid-column: 3;"></div><div class="gantt-grid-cell" style="grid-column: 4;"></div><div class="gantt-grid-cell" style="grid-column: 5;"></div><div class="gantt-grid-cell" style="grid-column: 6;"></div><div class="gantt-grid-cell" style="grid-column: 7;"></div><div class="gantt-grid-cell" style="grid-column: 8;"></div><div class="gantt-grid-cell" style="grid-column: 9;"></div><div class="gantt-grid-cell" style="grid-column: 10;"></div><div class="gantt-grid-cell" style="grid-column: 11;"></div><div class="gantt-grid-cell" style="grid-column: 12;"></div><div class="gantt-grid-cell" style="grid-column: 13;"></div><div class="gantt-grid-cell" style="grid-column: 14;"></div>
+              <div class="gantt-bar-wrapper" style="grid-column: 10 / 15;">
+                <div class="gantt-bar bg-bw" style="width: 100%;">着手予定</div>
               </div>
             </div>
           </div>
 
-          <!-- スクロール確認用のダミータスク（案件増に対応） -->
-          <div class="gantt-row">
+          <!-- タスク行4：作業中（青） -->
+          <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
             <div class="gantt-cell-side">
-              <span class="badge badge-ongoing">In Progress</span>
+              <span class="badge badge-blue">作業中</span>
               <div class="task-title">採用サイト リニューアル</div>
             </div>
             <div class="gantt-cell-time">
+              <div class="gantt-grid-cell" style="grid-column: 1;"></div><div class="gantt-grid-cell" style="grid-column: 2;"></div><div class="gantt-grid-cell" style="grid-column: 3;"></div><div class="gantt-grid-cell" style="grid-column: 4;"></div><div class="gantt-grid-cell" style="grid-column: 5;"></div><div class="gantt-grid-cell" style="grid-column: 6;"></div><div class="gantt-grid-cell" style="grid-column: 7;"></div><div class="gantt-grid-cell" style="grid-column: 8;"></div><div class="gantt-grid-cell" style="grid-column: 9;"></div><div class="gantt-grid-cell" style="grid-column: 10;"></div><div class="gantt-grid-cell" style="grid-column: 11;"></div><div class="gantt-grid-cell" style="grid-column: 12;"></div><div class="gantt-grid-cell" style="grid-column: 13;"></div><div class="gantt-grid-cell" style="grid-column: 14;"></div>
               <div class="gantt-bar-wrapper" style="grid-column: 2 / 14;">
-                <div class="gantt-bar bg-sub" style="width: 100%;">ワイヤーフレーム作成</div>
-              </div>
-            </div>
-          </div>
-          <div class="gantt-row">
-            <div class="gantt-cell-side">
-              <span class="badge badge-waiting">Waiting</span>
-              <div class="task-title">社内報 7月号デザイン</div>
-            </div>
-            <div class="gantt-cell-time">
-              <div class="gantt-bar-wrapper" style="grid-column: 12 / 15;">
-                <div class="gantt-bar bg-base" style="width: 100%;">素材待ち</div>
+                <div class="gantt-bar bg-blue" style="width: 100%;">WF作成・構成案</div>
               </div>
             </div>
           </div>
@@ -445,12 +336,12 @@
       </div>
     </section>
 
-    <!-- 完了案件ギャラリー -->
+    <!-- 完了案件ギャラリー（画質最高指定） -->
     <section class="gallery-wrapper">
       <div class="gallery-header">Completed Projects</div>
       <div class="slideshow-container">
         
-        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=1200');">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=100&w=2000');">
           <div class="glass-card">
             <div class="sub-title">Branding & System</div>
             <h3>仏蘭西レストラン 立ち上げ</h3>
@@ -459,12 +350,12 @@
               <li><span class="label">依頼者</span> <span class="value">French LABO. 様</span></li>
               <li><span class="label">作業期間</span> <span class="value">2025.11 - 2026.04</span></li>
               <li><span class="label">金額</span> <span class="value">¥1,200,000</span></li>
-              <li><span class="label">内容</span> <span class="value">ロゴ制作 / 予約システム連携</span></li>
+              <li><span class="label">内容</span> <span class="value">ロゴ制作 / システム連携</span></li>
             </ul>
           </div>
         </div>
 
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=1200');">
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=100&w=2000');">
           <div class="glass-card">
             <div class="sub-title">Web Development</div>
             <h3>ハイヤー予約サイト構築</h3>
@@ -473,21 +364,21 @@
               <li><span class="label">依頼者</span> <span class="value">CLoVER Hire 様</span></li>
               <li><span class="label">作業期間</span> <span class="value">2026.01 - 2026.03</span></li>
               <li><span class="label">金額</span> <span class="value">¥850,000</span></li>
-              <li><span class="label">内容</span> <span class="value">Shopify構築 / Square決済連携</span></li>
+              <li><span class="label">内容</span> <span class="value">Shopify構築 / Square決済</span></li>
             </ul>
           </div>
         </div>
 
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200');">
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=100&w=2000');">
           <div class="glass-card">
             <div class="sub-title">E-Commerce Renewal</div>
-            <h3>ECサイト 改修・運用保守</h3>
+            <h3>ECサイト 改修・保守</h3>
             <div class="line"></div>
             <ul class="glass-list">
               <li><span class="label">依頼者</span> <span class="value">Lykke Hygge 様</span></li>
               <li><span class="label">作業期間</span> <span class="value">2025.10 - 2025.12</span></li>
               <li><span class="label">金額</span> <span class="value">¥600,000</span></li>
-              <li><span class="label">内容</span> <span class="value">Liquidカスタマイズ / ページ改修</span></li>
+              <li><span class="label">内容</span> <span class="value">Liquidカスタマイズ</span></li>
             </ul>
           </div>
         </div>
