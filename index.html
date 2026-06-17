@@ -18,6 +18,8 @@
       --status-green-bg: #d1fae5;
       --status-yellow: #f59e0b;
       --status-yellow-bg: #fef3c7;
+      --status-gray: #94a3b8;
+      --status-gray-bg: #f1f5f9;
     }
 
     * {
@@ -43,6 +45,7 @@
       display: flex;
       flex-direction: column;
       padding: 24px 20px;
+      flex-shrink: 0;
     }
 
     .brand {
@@ -58,9 +61,7 @@
       flex-grow: 1;
     }
 
-    .nav-item {
-      margin-bottom: 8px;
-    }
+    .nav-item { margin-bottom: 8px; }
 
     .nav-link {
       display: block;
@@ -116,9 +117,7 @@
       box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
     }
 
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
-    }
+    .btn-primary:hover { background-color: var(--primary-hover); }
 
     /* 稼働メーター（カード） */
     .status-card {
@@ -151,77 +150,147 @@
       height: 12px;
       border-radius: 50%;
       margin-right: 12px;
+      background-color: var(--status-yellow); /* ガントチャートに合わせてやや混雑に */
     }
 
-    .dot-green { background-color: var(--status-green); }
-    .dot-yellow { background-color: var(--status-yellow); }
-
-    /* 案件一覧テーブル */
-    .table-container {
+    /* ガントチャート */
+    .gantt-wrapper {
       background-color: white;
       border-radius: 12px;
       border: 1px solid var(--border-color);
-      overflow: hidden;
+      overflow-x: auto;
+      margin-bottom: 32px;
     }
 
-    .table-header {
+    .gantt-header-title {
       padding: 20px 24px;
       border-bottom: 1px solid var(--border-color);
       font-weight: bold;
+      background-color: #fff;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
+    .gantt-body {
+      display: flex;
+      min-width: 900px; /* 縮み防止 */
     }
 
-    th {
-      padding: 16px 24px;
-      font-size: 0.875rem;
-      color: var(--text-light);
+    /* 左側：案件情報エリア */
+    .gantt-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border-color);
       background-color: #f8fafc;
-      font-weight: 500;
+    }
+
+    .gantt-task-head {
+      height: 40px;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
       border-bottom: 1px solid var(--border-color);
     }
 
-    td {
-      padding: 16px 24px;
-      font-size: 0.95rem;
+    .gantt-task {
+      height: 70px;
+      padding: 12px 20px;
       border-bottom: 1px solid var(--border-color);
-      vertical-align: middle;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: white;
     }
 
-    tbody tr:hover {
-      background-color: #f1f5f9;
+    .gantt-task:last-child { border-bottom: none; }
+
+    .task-title {
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-top: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 右側：タイムラインエリア */
+    .gantt-timeline {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gantt-dates {
+      display: grid;
+      grid-template-columns: repeat(14, 1fr); /* 2週間分（14日間）のグリッド */
+      height: 40px;
+      border-bottom: 1px solid var(--border-color);
+      background-color: #f8fafc;
+    }
+
+    .gantt-date {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      border-right: 1px dashed #e2e8f0;
+    }
+
+    .gantt-tracks {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gantt-track {
+      height: 70px;
+      display: grid;
+      grid-template-columns: repeat(14, 1fr);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 0;
+      /* 背景の縦線を描画 */
+      background-image: linear-gradient(to right, transparent calc(100% - 1px), #f1f5f9 calc(100% - 1px));
+      background-size: calc(100% / 14) 100%;
+    }
+
+    .gantt-track:last-child { border-bottom: none; }
+
+    /* バー（予定） */
+    .gantt-bar {
+      margin: 0 4px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-size: 0.8rem;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: opacity 0.2s;
     }
 
-    tbody tr:last-child td {
-      border-bottom: none;
-    }
+    .gantt-bar:hover { opacity: 0.9; }
+
+    /* 色分け */
+    .bg-blue { background-color: var(--primary-color); }
+    .bg-yellow { background-color: var(--status-yellow); }
+    .bg-gray { background-color: var(--status-gray); color: white;}
 
     /* バッジ */
     .badge {
-      padding: 6px 12px;
+      padding: 4px 10px;
       border-radius: 20px;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: bold;
       display: inline-block;
+      width: fit-content;
     }
+    .badge-ongoing { background-color: var(--status-green-bg); color: #047857; }
+    .badge-review { background-color: var(--status-yellow-bg); color: #b45309; }
+    .badge-waiting { background-color: var(--status-gray-bg); color: #475569; }
 
-    .badge-ongoing {
-      background-color: var(--status-green-bg);
-      color: #047857;
-    }
-
-    .badge-review {
-      background-color: var(--status-yellow-bg);
-      color: #b45309;
-    }
-
-    /* モーダル（簡易版） */
+    /* モーダル */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -248,7 +317,7 @@
     <div class="brand">Marketing Portal</div>
     <ul class="nav-menu">
       <li class="nav-item"><a href="#" class="nav-link active">ダッシュボード</a></li>
-      <li class="nav-item"><a href="#" class="nav-link">案件一覧</a></li>
+      <li class="nav-item"><a href="#" class="nav-link">案件一覧・ファイル</a></li>
       <li class="nav-item"><a href="#" class="nav-link">設定</a></li>
     </ul>
     <div class="user-info">
@@ -266,38 +335,72 @@
       <div class="status-info">
         <h3>マーケティング部 現在の稼働状況</h3>
         <div class="status-indicator">
-          <span class="status-dot dot-green"></span>
-          通常通り受付可能（最短着手：2営業日後〜）
+          <span class="status-dot"></span>
+          やや混雑（新規着手は6/25以降となります）
         </div>
       </div>
     </section>
 
-    <section class="table-container">
-      <div class="table-header">進行中の案件</div>
-      <table>
-        <thead>
-          <tr>
-            <th>ステータス</th>
-            <th>案件名</th>
-            <th>希望納期</th>
-            <th>最終更新日</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr onclick="alert('案件詳細ページへ遷移します')">
-            <td><span class="badge badge-ongoing">進行中</span></td>
-            <td>秋期キャンペーンLP制作</td>
-            <td>2026/07/15</td>
-            <td>2026/06/15</td>
-          </tr>
-          <tr onclick="alert('案件詳細ページへ遷移します')">
-            <td><span class="badge badge-review">確認待ち</span></td>
-            <td>展示会用パンフレット改修</td>
-            <td>2026/06/30</td>
-            <td>2026/06/16</td>
-          </tr>
-        </tbody>
-      </table>
+    <section class="gantt-wrapper">
+      <div class="gantt-header-title">進行中のプロジェクト（直近2週間）</div>
+      <div class="gantt-body">
+        
+        <div class="gantt-sidebar">
+          <div class="gantt-task-head">案件名・ステータス</div>
+          <div class="gantt-task">
+            <span class="badge badge-ongoing">進行中</span>
+            <div class="task-title">秋期キャンペーンLP制作</div>
+          </div>
+          <div class="gantt-task">
+            <span class="badge badge-review">確認待ち</span>
+            <div class="task-title">展示会用パンフレット改修</div>
+          </div>
+          <div class="gantt-task">
+            <span class="badge badge-waiting">未着手</span>
+            <div class="task-title">新規事業ロゴデザイン</div>
+          </div>
+        </div>
+
+        <div class="gantt-timeline">
+          <div class="gantt-dates">
+            <div class="gantt-date">6/17</div>
+            <div class="gantt-date">6/18</div>
+            <div class="gantt-date">6/19</div>
+            <div class="gantt-date">6/20</div>
+            <div class="gantt-date">6/21</div>
+            <div class="gantt-date">6/22</div>
+            <div class="gantt-date">6/23</div>
+            <div class="gantt-date">6/24</div>
+            <div class="gantt-date">6/25</div>
+            <div class="gantt-date">6/26</div>
+            <div class="gantt-date">6/27</div>
+            <div class="gantt-date">6/28</div>
+            <div class="gantt-date">6/29</div>
+            <div class="gantt-date">6/30</div>
+          </div>
+
+          <div class="gantt-tracks">
+            <div class="gantt-track">
+              <div class="gantt-bar bg-blue" style="grid-column: 1 / 9;" onclick="alert('案件詳細ページへ遷移します')">
+                デザイン・コーディング
+              </div>
+            </div>
+
+            <div class="gantt-track">
+              <div class="gantt-bar bg-yellow" style="grid-column: 4 / 12;" onclick="alert('案件詳細ページへ遷移します')">
+                初稿提出・先方確認中
+              </div>
+            </div>
+
+            <div class="gantt-track">
+              <div class="gantt-bar bg-gray" style="grid-column: 9 / 15;" onclick="alert('案件詳細ページへ遷移します')">
+                着手予定
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </section>
   </main>
 
@@ -315,12 +418,8 @@
   </div>
 
   <script>
-    function openModal() {
-      document.getElementById('requestModal').style.display = 'flex';
-    }
-    function closeModal() {
-      document.getElementById('requestModal').style.display = 'none';
-    }
+    function openModal() { document.getElementById('requestModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('requestModal').style.display = 'none'; }
   </script>
 
 </body>
