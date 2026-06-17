@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>案件詳細 - Marketing Portal</title>
   <style>
-    /* ニューモーフィズム & ブランドカラー設定 */
+    /* ニューモーフィズム & 指定ブランドカラー設定 */
     :root {
-      --color-base: #00385D;
-      --color-sub: #39DAFF;
-      --color-accent: #FFB900;
-      --color-black: #000000;
+      --color-base: #00385D;   /* 青（作業中） */
+      --color-sub: #39DAFF;    /* 水色 */
+      --color-accent: #FFB900; /* 黄色（依頼者確認中） */
+      --color-black: #000000;  /* 黒（未着手） */
       --color-white: #ffffff;
-
+      
+      /* ニューモーフィズム背景・テキスト用グレー */
       --nm-bg: #EFF2F9;
       --nm-text-main: #6E7F8D;
       --nm-text-light: #B5BFC6;
@@ -37,10 +38,7 @@
 
     /* 共通UIパーツ */
     .nm-card {
-      background-color: var(--nm-bg);
-      border-radius: 24px;
-      padding: 40px;
-      box-shadow: var(--shadow-outer);
+      background-color: var(--nm-bg); border-radius: 24px; padding: 40px; box-shadow: var(--shadow-outer);
     }
 
     .form-control {
@@ -57,39 +55,42 @@
       display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
     }
     .btn-primary:hover { transform: translateY(2px); box-shadow: var(--shadow-outer-sm); color: var(--color-sub); }
-    
-    .btn-accent { color: var(--color-accent); }
-    .btn-accent:hover { color: var(--color-accent); }
 
-    .badge { padding: 6px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; display: inline-block; }
+    .badge { padding: 6px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; display: inline-block; border: 1px solid transparent;}
     .badge-blue { background-color: var(--color-base); color: var(--color-white); box-shadow: 0 4px 8px rgba(0, 56, 93, 0.3); }
+    .badge-yellow { background-color: var(--color-accent); color: var(--color-black); box-shadow: 0 4px 8px rgba(255, 185, 0, 0.3); }
+    .badge-bw { background-color: transparent; color: var(--color-black); border-color: var(--color-black); }
+    .badge-gray { background-color: var(--nm-text-light); color: var(--color-white); border-color: var(--nm-text-light); }
 
     /* メインレイアウト */
     .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
 
-    /* ヘッダー */
+    /* ヘッダー（ステータス変更UI追加） */
     .header {
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;
       margin-bottom: 40px; border-bottom: 1px solid var(--wireframe-line); padding-bottom: 24px;
     }
     .back-link {
-      font-size: 1rem; font-weight: 700; color: var(--nm-text-light); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.2s;
+      font-size: 1rem; font-weight: 700; color: var(--nm-text-light); text-decoration: none; transition: color 0.2s;
     }
     .back-link:hover { color: var(--color-base); }
-    .page-title-area { text-align: right; }
-    .page-title { font-size: 2rem; font-weight: 800; color: var(--color-base); line-height: 1.2; margin-top: 8px; }
-
-    /* グリッドレイアウト（PC用2カラム） */
-    .project-grid {
-      display: grid;
-      grid-template-columns: 380px 1fr;
-      gap: 40px;
-      align-items: start;
+    .page-title-area { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .page-title { font-size: 2rem; font-weight: 800; color: var(--color-base); line-height: 1.2; }
+    
+    .status-changer {
+      display: flex; align-items: center; gap: 12px; background: var(--shadow-inner); padding: 4px 4px 4px 16px; border-radius: 30px; box-shadow: var(--shadow-inner);
     }
+    .status-changer label { font-size: 0.8rem; font-weight: 700; color: var(--nm-text-light); }
+    .status-select {
+      background: var(--nm-bg); border: none; padding: 8px 16px; border-radius: 20px;
+      font-size: 0.85rem; font-weight: 700; color: var(--color-base); outline: none; box-shadow: var(--shadow-outer-sm); cursor: pointer;
+    }
+
+    /* グリッドレイアウト */
+    .project-grid { display: grid; grid-template-columns: 380px 1fr; gap: 40px; align-items: start; }
 
     /* 左カラム：案件詳細 & MTGボタン */
     .detail-card h2 { font-size: 1.2rem; font-weight: 800; color: var(--color-base); margin-bottom: 24px; letter-spacing: 0.05em; }
-    
     .detail-list { list-style: none; margin-bottom: 40px; }
     .detail-list li { margin-bottom: 24px; }
     .detail-label { font-size: 0.75rem; font-weight: 700; color: var(--nm-text-light); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
@@ -100,15 +101,12 @@
 
     /* 右カラム：チャット & ファイル */
     .right-col { display: flex; flex-direction: column; gap: 40px; }
-
-    /* セクションタイトル */
     .section-title { font-size: 1.2rem; font-weight: 800; color: var(--color-base); margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
 
     /* チャットエリア */
     .chat-card { padding: 32px; display: flex; flex-direction: column; height: 600px; }
     .chat-timeline { flex-grow: 1; overflow-y: auto; padding-right: 16px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 24px; }
     
-    /* スクロールバー装飾 */
     .chat-timeline::-webkit-scrollbar { width: 6px; }
     .chat-timeline::-webkit-scrollbar-thumb { background-color: var(--nm-text-light); border-radius: 3px; }
 
@@ -118,11 +116,12 @@
     
     .msg-name { font-size: 0.75rem; font-weight: 700; color: var(--nm-text-light); margin-bottom: 4px; }
     .msg-bubble { padding: 16px 20px; border-radius: 20px; font-size: 0.95rem; line-height: 1.5; box-shadow: var(--shadow-outer-sm); }
-    
     .message.other .msg-bubble { background-color: var(--nm-bg); color: var(--color-base); border-top-left-radius: 4px; }
     .message.mine .msg-bubble { background-color: var(--color-base); color: var(--color-white); border-top-right-radius: 4px; }
-    
     .msg-time { font-size: 0.7rem; color: var(--nm-text-light); margin-top: 4px; }
+    
+    /* リンクテキスト用（Zoom URL等） */
+    .msg-bubble a { color: var(--color-sub); text-decoration: underline; font-weight: bold; }
 
     /* チャット入力欄 */
     .chat-input-area { display: flex; gap: 16px; }
@@ -152,12 +151,22 @@
     
     .form-group { margin-bottom: 24px; }
     .form-group label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--color-base); margin-bottom: 8px; }
+    
+    /* 開催形式選択トグル */
+    .type-toggle { display: flex; background: var(--shadow-inner); border-radius: 12px; padding: 4px; box-shadow: var(--shadow-inner); }
+    .type-toggle label {
+      flex: 1; text-align: center; padding: 12px 0; font-size: 0.85rem; font-weight: 700; color: var(--nm-text-light);
+      cursor: pointer; border-radius: 8px; transition: all 0.3s; margin-bottom: 0;
+    }
+    .type-toggle input { display: none; }
+    .type-toggle input:checked + label { background: var(--nm-bg); color: var(--color-base); box-shadow: var(--shadow-outer-sm); }
 
     /* SPレスポンシブ対応 */
     @media screen and (max-width: 900px) {
       .project-grid { grid-template-columns: 1fr; gap: 32px; }
-      .header { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .page-title-area { text-align: left; }
+      .header { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .page-title-area { align-items: flex-start; width: 100%; }
+      .status-changer { width: 100%; justify-content: space-between; margin-bottom: 16px;}
       .chat-card { height: 500px; padding: 24px; }
       .modal-content { padding: 32px 24px; }
     }
@@ -167,18 +176,30 @@
 
   <div class="container">
     
+    <!-- ヘッダー -->
     <header class="header">
-      <a href="#" class="back-link" onclick="history.back()">
-        <span style="font-size: 1.2rem;">←</span> Back to Dashboard
-      </a>
+      <a href="#" class="back-link" onclick="history.back()">← Back to Dashboard</a>
+      
       <div class="page-title-area">
-        <span class="badge badge-blue">作業中</span>
+        <!-- ステータス変更UI（共通） -->
+        <div class="status-changer">
+          <label>現在のステータス:</label>
+          <select class="status-select" id="statusSelect" onchange="updateStatusBadge(this.value)">
+            <option value="waiting">未着手</option>
+            <option value="ongoing" selected>作業中</option>
+            <option value="review">依頼者確認中</option>
+            <option value="done">完了</option>
+          </select>
+          <span id="currentBadge" class="badge badge-blue">作業中</span>
+        </div>
         <h1 class="page-title">秋期キャンペーンLP制作</h1>
       </div>
     </header>
 
+    <!-- メイングリッド -->
     <div class="project-grid">
       
+      <!-- 左カラム：案件詳細＆MTG -->
       <div class="left-col">
         <section class="nm-card detail-card">
           <h2>Project Details</h2>
@@ -204,23 +225,26 @@
             </li>
           </ul>
 
+          <!-- MTG希望ボタン（絵文字削除） -->
           <div class="mtg-section">
-            <button class="btn-primary btn-accent" onclick="openModal()">
-              <span style="font-size: 1.2rem;">📅</span> オンラインMTGを依頼する
+            <button class="btn-primary" style="color: var(--color-base);" onclick="openModal()">
+              打ち合わせを依頼する
             </button>
             <p style="font-size: 0.75rem; color: var(--nm-text-light); text-align: center; margin-top: 12px;">
-              デザインのすり合わせや進捗確認など
+              希望日と形式を選択してチャットへ送信
             </p>
           </div>
         </section>
       </div>
 
+      <!-- 右カラム：チャット＆ファイル -->
       <div class="right-col">
         
+        <!-- チャットエリア -->
         <section class="nm-card chat-card">
           <h2 class="section-title">Communication</h2>
           
-          <div class="chat-timeline">
+          <div class="chat-timeline" id="chatTimeline">
             <div class="message other">
               <div class="msg-name">マーケティング部</div>
               <div class="msg-bubble">
@@ -231,7 +255,7 @@
             </div>
 
             <div class="message mine">
-              <div class="msg-name">山田 太郎 (あなた)</div>
+              <div class="msg-name">山田 太郎</div>
               <div class="msg-bubble">
                 確認しました。キャッチコピーの変更、問題ありません！<br>
                 プロ目線でのご提案、助かります。よろしくお願いいたします。
@@ -248,12 +272,14 @@
             </div>
           </div>
 
-          <form class="chat-input-area" onsubmit="event.preventDefault(); alert('メッセージを送信しました');">
-            <textarea class="form-control" placeholder="メッセージを入力..."></textarea>
+          <!-- チャット入力 -->
+          <form class="chat-input-area" onsubmit="sendNormalMessage(event)">
+            <textarea id="chatInput" class="form-control" placeholder="メッセージを入力..."></textarea>
             <button type="submit" class="btn-primary btn-send">➤</button>
           </form>
         </section>
 
+        <!-- ファイル管理エリア -->
         <section class="nm-card file-card">
           <h2 class="section-title">
             Files & Assets
@@ -262,15 +288,15 @@
           
           <div class="drive-link-box">
             <button class="btn-primary" onclick="window.open('https://drive.google.com/', '_blank')">
-              <span style="font-size: 1.2rem; color: #1FA463;">📁</span> Googleドライブの案件フォルダを開く
+              Googleドライブの案件フォルダを開く
             </button>
             <p style="font-size: 0.8rem; color: var(--nm-text-light); margin-top: 12px; text-align: center;">
               ※過去の全ファイル、初稿デザイン、最終納品物はこちらで確認できます。
             </p>
           </div>
 
-          <div class="file-upload-wrapper" title="ここにドロップして追加アップロード">
-            <input type="file" multiple onchange="alert('選択したファイルはGoogleドライブの専用フォルダへ自動アップロードされます。')">
+          <div class="file-upload-wrapper">
+            <input type="file" multiple onchange="alert('選択したファイルはGoogleドライブへ自動アップロードされます。')">
             <div style="font-weight: 700; color: var(--color-base); margin-bottom: 4px;">新しいファイルを追加アップロード</div>
             <div style="font-size: 0.75rem; color: var(--nm-text-light);">クリックまたはドラッグ＆ドロップ</div>
           </div>
@@ -280,45 +306,136 @@
     </div>
   </div>
 
+  <!-- モーダル：MTG予約 -->
   <div class="modal-overlay" id="mtgModal">
     <div class="nm-card modal-content">
       <button class="modal-close" onclick="closeModal()">×</button>
       <h2 class="modal-title">Request a Meeting</h2>
-      <p class="modal-desc">打ち合わせの希望日時を第3候補までお知らせください。<br>担当者より確定日時をご連絡します。</p>
+      <p class="modal-desc">打ち合わせの形式と候補日を入力してください。</p>
       
-      <form onsubmit="event.preventDefault(); alert('MTGリクエストを送信しました！'); closeModal();">
+      <form onsubmit="submitMtgRequest(event)">
+        <!-- 開催形式 -->
+        <div class="form-group">
+          <label>開催形式</label>
+          <div class="type-toggle">
+            <input type="radio" id="type_online" name="mtgType" value="online" checked>
+            <label for="type_online">オンライン</label>
+            <input type="radio" id="type_real" name="mtgType" value="real">
+            <label for="type_real">リアル（対面）</label>
+          </div>
+        </div>
+
+        <!-- 候補日 -->
         <div class="form-group">
           <label>第1候補</label>
-          <input type="datetime-local" class="form-control" required>
+          <input type="datetime-local" id="date1" class="form-control" required>
         </div>
         <div class="form-group">
           <label>第2候補</label>
-          <input type="datetime-local" class="form-control" required>
+          <input type="datetime-local" id="date2" class="form-control" required>
         </div>
         <div class="form-group">
           <label>第3候補（任意）</label>
-          <input type="datetime-local" class="form-control">
+          <input type="datetime-local" id="date3" class="form-control">
         </div>
         
-        <button type="submit" class="btn-primary" style="margin-top: 32px;">リクエストを送信</button>
+        <button type="submit" class="btn-primary" style="margin-top: 32px;">チャットへ送信</button>
       </form>
     </div>
   </div>
 
   <script>
-    // モーダル制御
-    function openModal() {
-      document.getElementById('mtgModal').style.display = 'flex';
-    }
-    function closeModal() {
-      document.getElementById('mtgModal').style.display = 'none';
-    }
-    // モーダル外クリックで閉じる
-    window.onclick = function(event) {
-      const modal = document.getElementById('mtgModal');
-      if (event.target == modal) {
-        modal.style.display = "none";
+    // --- ステータスバッジの切り替え ---
+    function updateStatusBadge(value) {
+      const badge = document.getElementById('currentBadge');
+      
+      // 全クラスを一度リセット
+      badge.className = 'badge';
+      
+      if (value === 'waiting') {
+        badge.textContent = '未着手';
+        badge.classList.add('badge-bw');
+      } else if (value === 'ongoing') {
+        badge.textContent = '作業中';
+        badge.classList.add('badge-blue');
+      } else if (value === 'review') {
+        badge.textContent = '依頼者確認中';
+        badge.classList.add('badge-yellow');
+      } else if (value === 'done') {
+        badge.textContent = '完了';
+        badge.classList.add('badge-gray');
       }
+    }
+
+    // --- チャット追加の汎用関数 ---
+    function appendMessageToTimeline(textHTML) {
+      const timeline = document.getElementById('chatTimeline');
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // 新しいメッセージ要素の作成（自分からの送信とする）
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'message mine';
+      
+      msgDiv.innerHTML = `
+        <div class="msg-name">山田 太郎</div>
+        <div class="msg-bubble">${textHTML}</div>
+        <div class="msg-time">Today, ${timeStr}</div>
+      `;
+
+      timeline.appendChild(msgDiv);
+      // 一番下までスクロール
+      timeline.scrollTop = timeline.scrollHeight;
+    }
+
+    // 通常のチャット送信
+    function sendNormalMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+      
+      // 改行を<br>に変換して表示
+      appendMessageToTimeline(text.replace(/\n/g, '<br>'));
+      input.value = ''; // 入力欄リセット
+    }
+
+    // --- MTGリクエスト処理 ---
+    function openModal() { document.getElementById('mtgModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('mtgModal').style.display = 'none'; }
+    window.onclick = function(e) { if (e.target == document.getElementById('mtgModal')) closeModal(); }
+
+    function submitMtgRequest(e) {
+      e.preventDefault();
+      
+      const type = document.querySelector('input[name="mtgType"]:checked').value;
+      const d1 = document.getElementById('date1').value.replace('T', ' ');
+      const d2 = document.getElementById('date2').value.replace('T', ' ');
+      const d3 = document.getElementById('date3').value.replace('T', ' ');
+
+      // チャット用テキストの生成
+      let msgHTML = `打ち合わせをお願いします。<br><br>
+                     <strong>【形式】</strong><br>
+                     ${type === 'online' ? 'オンライン' : 'リアル（対面）'}<br><br>
+                     <strong>【候補日時】</strong><br>
+                     1. ${d1}<br>
+                     2. ${d2}`;
+      if(d3) msgHTML += `<br>3. ${d3}`;
+
+      // オンラインの場合は自動でダミーのZoomURLを発行して追記
+      if(type === 'online') {
+        msgHTML += `<br><br>
+                    <span style="font-size:0.8rem; opacity:0.8;">※システム自動発行</span><br>
+                    <strong>Zoom ミーティングURL:</strong><br>
+                    <a href="#" onclick="alert('Zoomアプリが起動します')">https://zoom.us/j/9876543210</a>`;
+      }
+
+      appendMessageToTimeline(msgHTML);
+      closeModal();
+      
+      // フォームの値をリセット
+      document.getElementById('date1').value = '';
+      document.getElementById('date2').value = '';
+      document.getElementById('date3').value = '';
     }
   </script>
 
