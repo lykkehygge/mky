@@ -7,9 +7,9 @@
   <style>
     /* ニューモーフィズム & ブランドカラー設定 */
     :root {
-      --color-base: #00385D;   /* 決定・主要ボタン */
-      --color-sub: #39DAFF;    /* アクティブ色 */
-      --color-accent: #FFB900; /* 注意・強調 */
+      --color-base: #00385D;
+      --color-sub: #39DAFF;
+      --color-accent: #FFB900;
       --color-black: #000000;
       --color-white: #ffffff;
 
@@ -37,7 +37,6 @@
       justify-content: center;
     }
 
-    /* フォーム全体のコンテナ */
     .form-container {
       width: 100%;
       max-width: 700px;
@@ -47,197 +46,97 @@
       box-shadow: var(--shadow-outer);
     }
 
-    .form-header {
-      margin-bottom: 48px;
-      text-align: center;
-    }
+    .form-header { margin-bottom: 48px; text-align: center; }
+    .form-title { font-size: 2.2rem; font-weight: 800; color: var(--color-base); letter-spacing: -0.02em; margin-bottom: 8px; }
+    .form-subtitle { font-size: 0.9rem; color: var(--nm-text-light); letter-spacing: 0.05em; }
 
-    .form-title {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--color-base);
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
+    .form-group { margin-bottom: 32px; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--color-base); margin-bottom: 12px; letter-spacing: 0.05em; }
+    .required-mark { color: var(--color-accent); margin-left: 4px; font-weight: bold; }
 
-    .form-subtitle {
-      font-size: 0.9rem;
-      color: var(--nm-text-light);
-      letter-spacing: 0.05em;
-    }
-
-    /* 各入力グループ */
-    .form-group {
-      margin-bottom: 32px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--color-base);
-      margin-bottom: 12px;
-      letter-spacing: 0.05em;
-    }
-
-    .required-mark {
-      color: var(--color-accent);
-      margin-left: 4px;
-      font-weight: bold;
-    }
-
-    /* 共通の入力フィールド（凹みデザイン） */
     .form-control {
-      width: 100%;
-      background-color: var(--nm-bg);
-      border: 1px solid transparent;
-      border-radius: 12px;
-      padding: 16px 20px;
-      font-size: 1rem;
-      color: var(--color-base);
-      font-family: inherit;
-      box-shadow: var(--shadow-inner);
-      transition: all 0.3s ease;
-      outline: none;
+      width: 100%; background-color: var(--nm-bg); border: 1px solid transparent; border-radius: 12px;
+      padding: 16px 20px; font-size: 1rem; color: var(--color-base); font-family: inherit;
+      box-shadow: var(--shadow-inner); transition: all 0.3s ease; outline: none;
     }
+    .form-control:focus { border-color: rgba(57, 218, 255, 0.5); box-shadow: var(--shadow-inner), 0 0 8px rgba(57, 218, 255, 0.2); }
+    .form-control::placeholder { color: var(--nm-text-light); }
+    textarea.form-control { min-height: 160px; resize: vertical; }
 
-    .form-control:focus {
-      border-color: rgba(57, 218, 255, 0.5); /* フォーカス時に水色に光る */
-      box-shadow: var(--shadow-inner), 0 0 8px rgba(57, 218, 255, 0.2);
-    }
-
-    .form-control::placeholder {
-      color: var(--nm-text-light);
-    }
-
-    textarea.form-control {
-      min-height: 160px;
-      resize: vertical;
-    }
-
-    /* ラジオボタン・チェックボックス（ボタン風デザイン） */
-    .radio-group {
-      display: flex;
-      gap: 16px;
-    }
-
-    .radio-label {
-      flex: 1;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .radio-label input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-    }
-
+    .radio-group { display: flex; gap: 16px; }
+    .radio-label { flex: 1; position: relative; cursor: pointer; }
+    .radio-label input { position: absolute; opacity: 0; cursor: pointer; }
     .radio-btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-      background-color: var(--nm-bg);
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--nm-text-main);
-      box-shadow: var(--shadow-outer-sm);
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
+      display: flex; justify-content: center; align-items: center; padding: 16px; background-color: var(--nm-bg);
+      border-radius: 12px; font-weight: 600; font-size: 0.95rem; color: var(--nm-text-main);
+      box-shadow: var(--shadow-outer-sm); transition: all 0.2s ease; border: 1px solid transparent;
     }
+    .radio-label input:checked ~ .radio-btn { box-shadow: var(--shadow-inner); color: var(--color-base); border-color: var(--color-sub); }
 
-    /* 選択時の状態（凹んで色が変わる） */
-    .radio-label input:checked ~ .radio-btn {
-      box-shadow: var(--shadow-inner);
-      color: var(--color-base);
-      border-color: var(--color-sub);
-    }
-
-    /* ファイルアップロードエリア（点線と凸デザイン） */
+    /* --- ファイルアップロード エリア --- */
     .file-upload-wrapper {
-      position: relative;
-      width: 100%;
-      padding: 40px 20px;
-      background-color: var(--nm-bg);
-      border: 2px dashed var(--nm-text-light);
-      border-radius: 16px;
-      text-align: center;
-      box-shadow: var(--shadow-outer-sm);
-      transition: all 0.3s ease;
-      cursor: pointer;
+      position: relative; width: 100%; padding: 40px 20px; background-color: var(--nm-bg);
+      border: 2px dashed var(--nm-text-light); border-radius: 16px; text-align: center;
+      box-shadow: var(--shadow-outer-sm); transition: all 0.3s ease; cursor: pointer;
     }
-
-    .file-upload-wrapper:hover {
-      border-color: var(--color-sub);
-      background-color: rgba(57, 218, 255, 0.05);
-    }
-
+    .file-upload-wrapper:hover { border-color: var(--color-sub); background-color: rgba(57, 218, 255, 0.05); }
+    
+    /* input自体は透明にして全体を覆う */
     .file-upload-wrapper input[type="file"] {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
     }
+    
+    .file-upload-text { font-weight: 600; color: var(--color-base); margin-bottom: 8px; }
+    .file-upload-subtext { font-size: 0.8rem; color: var(--nm-text-light); }
 
-    .file-upload-text {
-      font-weight: 600;
-      color: var(--color-base);
+    /* --- 選択されたファイルのリスト表示 --- */
+    .file-list {
+      list-style: none;
+      margin-top: 16px;
+      padding: 0;
+    }
+    
+    .file-list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--nm-bg);
+      padding: 12px 20px;
+      border-radius: 12px;
       margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: var(--color-base);
+      font-weight: 500;
+      /* 凹んだトレイの中にファイルが置かれているような表現 */
+      box-shadow: var(--shadow-inner); 
     }
 
-    .file-upload-subtext {
-      font-size: 0.8rem;
-      color: var(--nm-text-light);
+    .file-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 85%;
     }
+
+    .file-remove-btn {
+      color: var(--nm-text-light);
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+    .file-remove-btn:hover { color: var(--color-accent); }
 
     /* 送信ボタン */
-    .form-actions {
-      margin-top: 56px;
-      display: flex;
-      gap: 24px;
-    }
+    .form-actions { margin-top: 56px; display: flex; gap: 24px; }
+    .btn { flex: 1; padding: 18px 0; border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 800; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s ease; }
+    .btn-submit { background-color: var(--nm-bg); color: var(--color-base); box-shadow: var(--shadow-outer); }
+    .btn-submit:hover { box-shadow: var(--shadow-inner); color: var(--color-sub); }
+    .btn-cancel { background-color: transparent; color: var(--nm-text-light); box-shadow: none; border: 1px solid var(--wireframe-line); }
+    .btn-cancel:hover { background-color: var(--nm-text-light); color: var(--color-white); }
 
-    .btn {
-      flex: 1;
-      padding: 18px 0;
-      border: none;
-      border-radius: 30px;
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-submit {
-      background-color: var(--nm-bg);
-      color: var(--color-base);
-      box-shadow: var(--shadow-outer);
-    }
-
-    .btn-submit:hover {
-      box-shadow: var(--shadow-inner);
-      color: var(--color-sub);
-    }
-
-    .btn-cancel {
-      background-color: transparent;
-      color: var(--nm-text-light);
-      box-shadow: none;
-      border: 1px solid var(--wireframe-line);
-    }
-
-    .btn-cancel:hover {
-      background-color: var(--nm-text-light);
-      color: var(--color-white);
-    }
-
-    /* SP対応 */
     @media screen and (max-width: 768px) {
       body { padding: 16px; }
       .form-container { padding: 40px 24px; border-radius: 16px; }
@@ -256,7 +155,7 @@
       <p class="form-subtitle">新規案件の依頼フォーム</p>
     </div>
 
-    <form onsubmit="event.preventDefault(); alert('システム実装後、データが送信されます。');">
+    <form id="requestForm" onsubmit="event.preventDefault(); alert('現在 ' + dataTransfer.files.length + ' 個のファイルが添付されています。システム実装後、データが送信されます。');">
       
       <div class="form-group">
         <label class="form-label">依頼者名（担当者）<span class="required-mark">*</span></label>
@@ -293,12 +192,15 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label">添付ファイル（ロゴ・素材・指示書など）</label>
+        <label class="form-label">添付ファイル（複数選択・追加可能）</label>
+        
         <div class="file-upload-wrapper">
-          <input type="file" multiple id="fileInput" onchange="updateFileName()">
-          <div class="file-upload-text">クリック、またはファイルをドロップしてアップロード</div>
-          <div class="file-upload-subtext" id="fileNameDisplay">最大ファイルサイズ: 50MBまで</div>
+          <input type="file" multiple id="fileInput">
+          <div class="file-upload-text">クリックしてファイルを追加</div>
+          <div class="file-upload-subtext">複数回に分けて追加できます（1ファイル最大50MB）</div>
         </div>
+
+        <ul id="fileList" class="file-list"></ul>
       </div>
 
       <div class="form-actions">
@@ -310,23 +212,72 @@
   </div>
 
   <script>
-    // ファイル選択時にファイル名を表示する簡易スクリプト
-    function updateFileName() {
-      const input = document.getElementById('fileInput');
-      const display = document.getElementById('fileNameDisplay');
-      if (input.files && input.files.length > 0) {
-        if (input.files.length === 1) {
-          display.textContent = '選択中: ' + input.files[0].name;
-        } else {
-          display.textContent = input.files.length + ' 個のファイルを選択中';
-        }
-        display.style.color = 'var(--color-base)';
-        display.style.fontWeight = 'bold';
-      } else {
-        display.textContent = '最大ファイルサイズ: 50MBまで';
-        display.style.color = 'var(--nm-text-light)';
-        display.style.fontWeight = 'normal';
+    const fileInput = document.getElementById('fileInput');
+    const fileListContainer = document.getElementById('fileList');
+    
+    // 複数回に分けて選択されたファイルを保持するためのオブジェクト
+    let dataTransfer = new DataTransfer();
+
+    // ファイルが選択（追加）された時の処理
+    fileInput.addEventListener('change', function() {
+      // 新しく選択されたファイルを DataTransfer に追加していく
+      for (let i = 0; i < fileInput.files.length; i++) {
+        dataTransfer.items.add(fileInput.files[i]);
       }
+      
+      // input要素が持っているファイル情報を、追加済みの全ファイル情報で上書きする
+      fileInput.files = dataTransfer.files;
+      
+      // リストを画面に描画
+      renderFileList();
+    });
+
+    // ファイルリストを画面に表示する関数
+    function renderFileList() {
+      // 一度リストを空にする
+      fileListContainer.innerHTML = '';
+      
+      // 保持しているファイル群をループしてリストアイテム（li）を作成
+      for (let i = 0; i < fileInput.files.length; i++) {
+        const file = fileInput.files[i];
+        
+        const li = document.createElement('li');
+        li.className = 'file-list-item';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'file-name';
+        nameSpan.textContent = file.name;
+        
+        const removeBtn = document.createElement('span');
+        removeBtn.className = 'file-remove-btn';
+        removeBtn.innerHTML = '×';
+        // 削除ボタンが押されたら、そのインデックスのファイルを消す
+        removeBtn.onclick = function() { removeFile(i); };
+
+        li.appendChild(nameSpan);
+        li.appendChild(removeBtn);
+        fileListContainer.appendChild(li);
+      }
+    }
+
+    // 特定のファイルをリストから削除する関数
+    function removeFile(indexToRemove) {
+      // 新しい DataTransfer オブジェクトを作成
+      const newDataTransfer = new DataTransfer();
+      
+      // 削除対象以外のファイルを新しい DataTransfer に詰め直す
+      for (let i = 0; i < fileInput.files.length; i++) {
+        if (i !== indexToRemove) {
+          newDataTransfer.items.add(fileInput.files[i]);
+        }
+      }
+      
+      // 変数と input要素のファイル情報を新しいものに更新
+      dataTransfer = newDataTransfer;
+      fileInput.files = dataTransfer.files;
+      
+      // リストを再描画
+      renderFileList();
     }
   </script>
 
