@@ -56,16 +56,10 @@
     }
     .btn-primary:hover { transform: translateY(2px); box-shadow: var(--shadow-outer-sm); color: var(--color-sub); }
 
-    .badge { padding: 6px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; display: inline-block; border: 1px solid transparent;}
-    .badge-blue { background-color: var(--color-base); color: var(--color-white); box-shadow: 0 4px 8px rgba(0, 56, 93, 0.3); }
-    .badge-yellow { background-color: var(--color-accent); color: var(--color-black); box-shadow: 0 4px 8px rgba(255, 185, 0, 0.3); }
-    .badge-bw { background-color: transparent; color: var(--color-black); border-color: var(--color-black); }
-    .badge-gray { background-color: var(--nm-text-light); color: var(--color-white); border-color: var(--nm-text-light); }
-
     /* メインレイアウト */
     .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
 
-    /* ヘッダー（ステータス変更UI追加） */
+    /* ヘッダー */
     .header {
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;
       margin-bottom: 40px; border-bottom: 1px solid var(--wireframe-line); padding-bottom: 24px;
@@ -74,16 +68,44 @@
       font-size: 1rem; font-weight: 700; color: var(--nm-text-light); text-decoration: none; transition: color 0.2s;
     }
     .back-link:hover { color: var(--color-base); }
-    .page-title-area { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .page-title-area { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
     .page-title { font-size: 2rem; font-weight: 800; color: var(--color-base); line-height: 1.2; }
     
     .status-changer {
-      display: flex; align-items: center; gap: 12px; background: var(--shadow-inner); padding: 4px 4px 4px 16px; border-radius: 30px; box-shadow: var(--shadow-inner);
+      display: flex; align-items: center; gap: 12px;
     }
     .status-changer label { font-size: 0.8rem; font-weight: 700; color: var(--nm-text-light); }
+    
+    /* セレクトボックス（ステータスカラー反映） */
     .status-select {
-      background: var(--nm-bg); border: none; padding: 8px 16px; border-radius: 20px;
-      font-size: 0.85rem; font-weight: 700; color: var(--color-base); outline: none; box-shadow: var(--shadow-outer-sm); cursor: pointer;
+      border: 2px solid transparent; padding: 6px 16px; border-radius: 20px;
+      font-size: 0.85rem; font-weight: 800; outline: none; cursor: pointer;
+      transition: all 0.3s ease; appearance: none; -webkit-appearance: none;
+      /* プルダウンの矢印を独自に追加 */
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 14px;
+      padding-right: 32px;
+    }
+    
+    /* プルダウンの選択肢自体の色はデフォルトに戻す（視認性確保のため） */
+    .status-select option { background-color: var(--color-white); color: var(--color-black); font-weight: bold; }
+
+    /* 各ステータスの色設定 */
+    .status-select.st-waiting {
+      background-color: transparent; color: var(--color-black); border-color: var(--color-black);
+    }
+    .status-select.st-ongoing {
+      background-color: var(--color-base); color: var(--color-white); box-shadow: 0 4px 8px rgba(0, 56, 93, 0.3);
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    }
+    .status-select.st-review {
+      background-color: var(--color-accent); color: var(--color-black); box-shadow: 0 4px 8px rgba(255, 185, 0, 0.3);
+    }
+    .status-select.st-done {
+      background-color: var(--nm-text-light); color: var(--color-white); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     }
 
     /* グリッドレイアウト */
@@ -120,7 +142,6 @@
     .message.mine .msg-bubble { background-color: var(--color-base); color: var(--color-white); border-top-right-radius: 4px; }
     .msg-time { font-size: 0.7rem; color: var(--nm-text-light); margin-top: 4px; }
     
-    /* リンクテキスト用（Zoom URL等） */
     .msg-bubble a { color: var(--color-sub); text-decoration: underline; font-weight: bold; }
 
     /* チャット入力欄 */
@@ -152,7 +173,6 @@
     .form-group { margin-bottom: 24px; }
     .form-group label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--color-base); margin-bottom: 8px; }
     
-    /* 開催形式選択トグル */
     .type-toggle { display: flex; background: var(--shadow-inner); border-radius: 12px; padding: 4px; box-shadow: var(--shadow-inner); }
     .type-toggle label {
       flex: 1; text-align: center; padding: 12px 0; font-size: 0.85rem; font-weight: 700; color: var(--nm-text-light);
@@ -166,7 +186,7 @@
       .project-grid { grid-template-columns: 1fr; gap: 32px; }
       .header { flex-direction: column; align-items: flex-start; gap: 24px; }
       .page-title-area { align-items: flex-start; width: 100%; }
-      .status-changer { width: 100%; justify-content: space-between; margin-bottom: 16px;}
+      .status-changer { width: 100%; margin-bottom: 8px;}
       .chat-card { height: 500px; padding: 24px; }
       .modal-content { padding: 32px 24px; }
     }
@@ -181,16 +201,15 @@
       <a href="#" class="back-link" onclick="history.back()">← Back to Dashboard</a>
       
       <div class="page-title-area">
-        <!-- ステータス変更UI（共通） -->
+        <!-- ステータス変更UI（セレクトボックス単体で色が切り替わる） -->
         <div class="status-changer">
           <label>現在のステータス:</label>
-          <select class="status-select" id="statusSelect" onchange="updateStatusBadge(this.value)">
+          <select class="status-select st-ongoing" id="statusSelect" onchange="updateStatusColor(this)">
             <option value="waiting">未着手</option>
             <option value="ongoing" selected>作業中</option>
             <option value="review">依頼者確認中</option>
             <option value="done">完了</option>
           </select>
-          <span id="currentBadge" class="badge badge-blue">作業中</span>
         </div>
         <h1 class="page-title">秋期キャンペーンLP制作</h1>
       </div>
@@ -225,7 +244,7 @@
             </li>
           </ul>
 
-          <!-- MTG希望ボタン（絵文字削除） -->
+          <!-- MTG希望ボタン -->
           <div class="mtg-section">
             <button class="btn-primary" style="color: var(--color-base);" onclick="openModal()">
               打ち合わせを依頼する
@@ -345,26 +364,12 @@
   </div>
 
   <script>
-    // --- ステータスバッジの切り替え ---
-    function updateStatusBadge(value) {
-      const badge = document.getElementById('currentBadge');
-      
-      // 全クラスを一度リセット
-      badge.className = 'badge';
-      
-      if (value === 'waiting') {
-        badge.textContent = '未着手';
-        badge.classList.add('badge-bw');
-      } else if (value === 'ongoing') {
-        badge.textContent = '作業中';
-        badge.classList.add('badge-blue');
-      } else if (value === 'review') {
-        badge.textContent = '依頼者確認中';
-        badge.classList.add('badge-yellow');
-      } else if (value === 'done') {
-        badge.textContent = '完了';
-        badge.classList.add('badge-gray');
-      }
+    // --- ステータスカラーの切り替え（セレクトボックス自体） ---
+    function updateStatusColor(selectElement) {
+      // 既存のカラークラスをすべて削除
+      selectElement.classList.remove('st-waiting', 'st-ongoing', 'st-review', 'st-done');
+      // 選択された値に応じた新しいクラスを追加
+      selectElement.classList.add('st-' + selectElement.value);
     }
 
     // --- チャット追加の汎用関数 ---
@@ -372,7 +377,7 @@
       const timeline = document.getElementById('chatTimeline');
       const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      // 新しいメッセージ要素の作成（自分からの送信とする）
+      // 新しいメッセージ要素の作成
       const msgDiv = document.createElement('div');
       msgDiv.className = 'message mine';
       
