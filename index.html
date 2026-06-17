@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>案件管理システム</title>
+  <title>【依頼者】ダッシュボード - Marketing Portal</title>
   <style>
-    /* ニューモーフィズム & ブランドカラー設定 */
+    /* ニューモーフィズム & 指定ブランドカラー設定（ライトモード） */
     :root {
-      --color-base: #00385D;   /* 青（作業中） */
-      --color-sub: #39DAFF;    
-      --color-accent: #FFB900; /* 黄色（先方確認中） */
-      --color-black: #000000;  /* 白黒（未着手） */
-      --color-white: #ffffff;  /* 白黒（未着手） */
-
+      /* 許可されたブランドカラーのみ使用 */
+      --color-base: #00385D;   /* 青（作業中・基本テキスト） */
+      --color-sub: #39DAFF;    /* 水色 */
+      --color-accent: #FFB900; /* 黄色（確認中・混雑・新着ドット） */
+      --color-black: #000000;  /* 黒（未着手・停止） */
+      --color-white: #ffffff;  
+      
+      /* ライトモード用の背景・テキストグレー */
       --nm-bg: #EFF2F9;
       --nm-text-main: #6E7F8D;
       --nm-text-light: #B5BFC6;
       --wireframe-line: rgba(110, 127, 141, 0.25);
       
+      /* シャドウ */
       --shadow-outer: 8px 8px 16px rgba(110, 127, 141, 0.2), -8px -8px 16px rgba(255, 255, 255, 1);
       --shadow-outer-sm: 4px 4px 8px rgba(110, 127, 141, 0.15), -4px -4px 8px rgba(255, 255, 255, 1);
+      --shadow-inner: inset 4px 4px 8px rgba(110, 127, 141, 0.15), inset -4px -4px 8px rgba(255, 255, 255, 1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,73 +39,69 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* メインコンテンツ（サイドバー削除による全幅最適化） */
+    /* スクロールバー装飾 */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--nm-bg); border-radius: 4px; box-shadow: var(--shadow-inner); }
+    ::-webkit-scrollbar-thumb { background: var(--nm-text-light); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--nm-text-main); }
+
     .main-content {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 24px 80px;
+      width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px;
     }
 
-    /* ヘッダー周り */
+    /* ヘッダー */
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 56px;
-      border-bottom: 1px solid var(--wireframe-line);
-      padding-bottom: 24px;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 40px; border-bottom: 1px solid var(--wireframe-line); padding-bottom: 24px;
     }
-
-    .brand {
-      font-size: 1.8rem;
-      font-weight: 300;
-      color: var(--color-base);
-      letter-spacing: 0.1em;
-      line-height: 1.1;
-    }
+    .brand { font-size: 1.8rem; font-weight: 300; color: var(--color-base); letter-spacing: 0.1em; line-height: 1.1; }
     .brand strong { font-weight: 800; display: block; }
+    
+    /* ヘッダー右側（ログイン情報・ログアウト） */
+    .header-user-info { display: flex; align-items: center; gap: 24px; font-size: 0.9rem; }
+    .user-name { color: var(--color-base); font-weight: 600; letter-spacing: 0.05em; }
+    .user-name span { color: var(--nm-text-light); font-weight: normal; margin-right: 8px;}
+    .btn-logout {
+      background: none; border: 1px solid var(--wireframe-line); color: var(--nm-text-light);
+      padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-logout:hover { background: var(--nm-bg); color: var(--color-sub); box-shadow: var(--shadow-inner); border-color: transparent;}
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 24px;
+    /* トップアクション＆HUDパラメーターエリア */
+    .top-dashboard-section {
+      display: flex; gap: 24px; margin-bottom: 56px; align-items: stretch;
     }
 
-    .btn-primary {
-      background-color: var(--nm-bg); color: var(--color-base); border: none; padding: 16px 32px;
-      border-radius: 30px; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.05em;
-      cursor: pointer; box-shadow: var(--shadow-outer); transition: all 0.2s ease;
-      display: flex; align-items: center; gap: 8px;
+    /* New Request ボタン（パラメーターの左） */
+    .btn-new-req {
+      flex-shrink: 0; width: 180px; background-color: var(--nm-bg); color: var(--color-base);
+      border: 1px solid transparent; border-radius: 12px; cursor: pointer;
+      box-shadow: var(--shadow-outer); transition: all 0.2s ease;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+      font-size: 1rem; font-weight: 800; letter-spacing: 0.05em;
     }
-    .btn-primary:hover { transform: translateY(2px); box-shadow: var(--shadow-outer-sm); }
+    .btn-new-req:hover { box-shadow: var(--shadow-inner); color: var(--color-sub); }
+    .plus-icon { font-size: 2.5rem; line-height: 1; font-weight: 300; }
 
     /* HUDパラメーター */
     .hud-params {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--wireframe-line);
-      border: 1px solid var(--wireframe-line);
-      border-radius: 12px;
-      margin-bottom: 56px;
-      overflow: hidden;
-      box-shadow: var(--shadow-outer-sm);
+      flex-grow: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+      background: var(--wireframe-line); border: 1px solid var(--wireframe-line);
+      border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-outer-sm);
     }
-
-    .hud-box {
-      background: var(--nm-bg); padding: 32px 24px; display: flex; flex-direction: column; justify-content: space-between;
-    }
+    .hud-box { background: var(--nm-bg); padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
     .hud-label {
       font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; color: var(--nm-text-light);
-      margin-bottom: 16px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;
     }
     .hud-label::after { content: "＋"; font-size: 0.8rem; color: var(--wireframe-line); }
-    .hud-value { font-size: 2.5rem; font-weight: 300; color: var(--color-base); display: flex; align-items: baseline; gap: 8px; line-height: 1; }
+    
+    .hud-value { font-size: 2.2rem; font-weight: 300; color: var(--color-base); display: flex; align-items: baseline; gap: 4px; line-height: 1; }
     .hud-unit { font-size: 0.85rem; font-weight: 500; color: var(--nm-text-main); letter-spacing: 0.1em; text-transform: uppercase; }
-    .status-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background-color: var(--color-sub); box-shadow: 0 0 10px var(--color-sub); margin-right: 8px;}
+    
+    .status-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background-color: var(--color-accent); box-shadow: 0 0 10px var(--color-accent); margin-right: 8px;}
 
-    /* ガントチャート（上下左右スクロール対応・ズレ修正版） */
+    /* ガントチャート（ライトモード・管理者仕様反映版） */
     .gantt-wrapper { margin-bottom: 80px; }
     .gantt-title { font-size: 1.2rem; font-weight: 800; color: var(--color-base); letter-spacing: 0.05em; margin-bottom: 24px; }
     
@@ -109,61 +109,55 @@
       max-height: 500px; overflow: auto; background: var(--nm-bg);
       border: 1px solid var(--wireframe-line); border-radius: 16px; box-shadow: var(--shadow-outer-sm);
     }
-
     .gantt-table { min-width: 900px; display: flex; flex-direction: column; }
     .gantt-row { display: flex; border-bottom: 1px solid var(--wireframe-line); transition: background-color 0.2s; cursor: pointer; }
     .gantt-row:not(.header):hover { background-color: rgba(0, 56, 93, 0.03); }
     .gantt-row:last-child { border-bottom: none; }
     
-    /* ヘッダー固定 */
     .gantt-row.header { position: sticky; top: 0; z-index: 20; background: var(--nm-bg); cursor: default; }
-
-    /* サイドバー列固定 */
     .gantt-cell-side {
       width: 260px; flex-shrink: 0; padding: 24px; position: sticky; left: 0; z-index: 10;
       background: var(--nm-bg); border-right: 1px solid var(--wireframe-line);
-      display: flex; flex-direction: column; justify-content: center;
+      display: flex; flex-direction: column; justify-content: center; position: relative;
     }
     .gantt-row.header .gantt-cell-side { z-index: 30; font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light); }
 
-    /* タイムライン列（Gridによるズレ防止設計） */
-    .gantt-cell-time {
-      flex-grow: 1;
-      display: grid;
-      grid-template-columns: repeat(14, 1fr);
-      grid-template-rows: 1fr;
-    }
-
-    /* 日付と背景グリッド線 */
+    .gantt-cell-time { flex-grow: 1; display: grid; grid-template-columns: repeat(14, 1fr); grid-template-rows: 1fr; }
     .gantt-grid-cell { border-right: 1px solid rgba(110, 127, 141, 0.15); grid-row: 1; }
     .gantt-date {
       display: flex; align-items: center; justify-content: center; grid-row: 1;
       font-size: 0.85rem; font-weight: 600; color: var(--nm-text-light); border-right: 1px solid rgba(110, 127, 141, 0.15);
     }
 
-    /* タスク装飾 */
     .task-title { font-size: 0.95rem; font-weight: 700; color: var(--color-base); margin-top: 6px; }
-    .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.65rem; font-weight: 800; width: fit-content; border: 1px solid transparent; }
     
-    .gantt-bar-wrapper { grid-row: 1; align-self: center; padding: 0 4px; z-index: 2; pointer-events: none; }
+    /* バッジ */
+    .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.65rem; font-weight: 800; width: fit-content; border: 1px solid transparent; }
+    .badge-blue { background-color: var(--color-base); color: var(--color-white); }
+    .badge-yellow { background-color: var(--color-accent); color: var(--color-black); }
+    .badge-bw { background-color: transparent; color: var(--color-black); border-color: var(--color-black); }
+
+    /* バー */
+    .gantt-bar-wrapper { grid-row: 1; align-self: center; padding: 0 4px; z-index: 2; pointer-events: none; position: relative; }
     .gantt-bar {
       height: 28px; border-radius: 14px; display: flex; align-items: center; padding: 0 16px;
       font-size: 0.75rem; font-weight: 800; border: 2px solid transparent;
     }
-
-    /* 3色のカラールール適用 */
-    /* 1. 作業中（青） */
-    .badge-blue { background-color: var(--color-base); color: var(--color-white); }
-    .bg-blue { background-color: var(--color-base); color: var(--color-white); box-shadow: 0 4px 8px rgba(0, 56, 93, 0.3); }
-    
-    /* 2. 先方確認中（黄） */
-    .badge-yellow { background-color: var(--color-accent); color: var(--color-black); }
+    .bg-blue { background-color: var(--color-base); color: var(--color-white); box-shadow: 0 4px 8px rgba(0, 56, 93, 0.3); border-color: var(--color-sub); }
     .bg-yellow { background-color: var(--color-accent); color: var(--color-black); box-shadow: 0 4px 8px rgba(255, 185, 0, 0.3); }
-    
-    /* 3. 未着手（白黒） */
-    .badge-bw { background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black); }
-    .bg-bw { background-color: var(--color-white); color: var(--color-black); border-color: var(--color-black); }
+    .bg-bw { background-color: transparent; color: var(--color-black); border-color: var(--color-black); }
 
+    /* 新着ドットアニメーション（ライトモード用） */
+    .update-dot {
+      position: absolute; top: -6px; right: -6px; width: 14px; height: 14px;
+      background-color: var(--color-accent); border-radius: 50%; border: 2px solid var(--nm-bg);
+      animation: pulse 2s infinite; z-index: 5;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 185, 0, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(255, 185, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 185, 0, 0); }
+    }
 
     /* 完了案件ギャラリー（グラスモーフィズム） */
     .gallery-wrapper { overflow: hidden; border-radius: 24px; margin-bottom: 80px; }
@@ -189,30 +183,15 @@
     .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s ease; }
     .dot.active { background: var(--color-sub); transform: scale(1.5); }
 
-    /* スマートフォン（SP）レスポンシブ対応 */
-    @media screen and (max-width: 768px) {
-      .main-content { padding: 24px 16px 40px; }
-      
-      .header { flex-direction: column; align-items: flex-start; gap: 24px; padding-bottom: 24px; }
-      .brand { font-size: 1.6rem; }
-      .brand strong { display: inline; }
-      .btn-primary { width: 100%; justify-content: center; }
-
-      .hud-params { grid-template-columns: 1fr 1fr; margin-bottom: 40px; }
-      .hud-box { padding: 20px 16px; }
-      .hud-value { font-size: 2rem; }
-
-      /* ガントチャートのSP対応 */
-      .gantt-cell-side { width: 160px; padding: 16px; }
-      .task-title { font-size: 0.85rem; }
-
-      /* SP時のカード飛び出し防止（高さを自動調整して余白を確保） */
+    /* SP対応 */
+    @media screen and (max-width: 900px) {
+      .header { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .header-user-info { width: 100%; justify-content: space-between; }
+      .top-dashboard-section { flex-direction: column; }
+      .btn-new-req { width: 100%; height: auto; padding: 24px; flex-direction: row; }
+      .hud-params { grid-template-columns: 1fr 1fr; }
       .slideshow-container { height: 600px; }
-      .slide { padding: 16px; }
-      .glass-card { padding: 32px 20px; width: 100%; }
-      .glass-card h3 { font-size: 1.3rem; }
-      .glass-list li { flex-direction: column; align-items: flex-start; gap: 4px; }
-      .glass-list .value { text-align: left; }
+      .glass-card { padding: 32px 20px; }
     }
   </style>
 </head>
@@ -220,43 +199,54 @@
 
   <main class="main-content">
     
-    <!-- ヘッダー（ブランドロゴ統合） -->
+    <!-- ヘッダー -->
     <header class="header">
       <div class="brand">
         MARKETING <br class="sp-none"><strong>PORTAL.</strong>
       </div>
-      <div class="header-actions">
-        <button class="btn-primary" onclick="alert('依頼フォームを開きます')">
-          <span style="font-size: 1.4rem; line-height: 1;">＋</span> New Request
-        </button>
+      <div class="header-user-info">
+        <div class="user-name"><span>Logged in as:</span>株式会社〇〇 山田 太郎</div>
+        <button class="btn-logout" onclick="alert('ログアウトします')">Logout</button>
       </div>
     </header>
 
-    <!-- HUDパラメーター -->
-    <section class="hud-params">
-      <div class="hud-box">
-        <div class="hud-label">Active Prj</div>
-        <div class="hud-value">03 <span class="hud-unit">prj</span></div>
-      </div>
-      <div class="hud-box">
-        <div class="hud-label">Achievements</div>
-        <div class="hud-value">128 <span class="hud-unit">prj</span></div>
-      </div>
-      <div class="hud-box">
-        <div class="hud-label">Min Lead Time</div>
-        <div class="hud-value">08 <span class="hud-unit">days</span></div>
-      </div>
-      <div class="hud-box">
-        <div class="hud-label">System Status</div>
-        <div class="hud-value" style="font-size: 1.4rem; font-weight: 600;">
-          <span class="status-dot"></span>Normal
-        </div>
-      </div>
-    </section>
+    <!-- トップアクション＆HUD -->
+    <div class="top-dashboard-section">
+      
+      <!-- New Request ボタン -->
+      <button class="btn-new-req" onclick="alert('依頼フォームを開きます')">
+        <span class="plus-icon">＋</span>
+        <span>New Request</span>
+      </button>
 
-    <!-- スクロール可能なガントチャート（ズレ防止グリッド版・クリックで遷移） -->
+      <!-- パラメーター -->
+      <section class="hud-params">
+        <div class="hud-box">
+          <div class="hud-label">Active Prj</div>
+          <div class="hud-value">03 <span class="hud-unit">prj</span></div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label">Completed</div>
+          <div class="hud-value">128 <span class="hud-unit">prj</span></div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label">Earliest Start</div>
+          <!-- 管理者画面で設定された着手可能日を反映 -->
+          <div class="hud-value"><span style="font-size: 1rem; margin-right: 4px;">最短</span>8<span class="hud-unit">日後〜</span></div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label">System Status</div>
+          <div class="hud-value" style="font-size: 1.2rem; font-weight: 800;">
+            <!-- 管理者画面で設定された稼働状況を反映 -->
+            <span class="status-dot"></span>混雑
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ガントチャート -->
     <section class="gantt-wrapper">
-      <h2 class="gantt-title">Active Projects</h2>
+      <h2 class="gantt-title">Active Projects Timeline</h2>
       <div class="gantt-scroll-container">
         <div class="gantt-table">
           
@@ -264,7 +254,7 @@
           <div class="gantt-row header">
             <div class="gantt-cell-side">Project & Status</div>
             <div class="gantt-cell-time">
-              <!-- 14日分の日付 -->
+              <!-- 日付 -->
               <div class="gantt-date" style="grid-column: 1;">17</div><div class="gantt-date" style="grid-column: 2;">18</div>
               <div class="gantt-date" style="grid-column: 3;">19</div><div class="gantt-date" style="grid-column: 4;">20</div>
               <div class="gantt-date" style="grid-column: 5;">21</div><div class="gantt-date" style="grid-column: 6;">22</div>
@@ -275,7 +265,7 @@
             </div>
           </div>
 
-          <!-- タスク行1：作業中（青） -->
+          <!-- タスク行1：作業中（青・新着ドットあり） -->
           <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
             <div class="gantt-cell-side">
               <span class="badge badge-blue">作業中</span>
@@ -283,17 +273,17 @@
             </div>
             <div class="gantt-cell-time">
               <div class="gantt-grid-cell" style="grid-column: 1;"></div><div class="gantt-grid-cell" style="grid-column: 2;"></div><div class="gantt-grid-cell" style="grid-column: 3;"></div><div class="gantt-grid-cell" style="grid-column: 4;"></div><div class="gantt-grid-cell" style="grid-column: 5;"></div><div class="gantt-grid-cell" style="grid-column: 6;"></div><div class="gantt-grid-cell" style="grid-column: 7;"></div><div class="gantt-grid-cell" style="grid-column: 8;"></div><div class="gantt-grid-cell" style="grid-column: 9;"></div><div class="gantt-grid-cell" style="grid-column: 10;"></div><div class="gantt-grid-cell" style="grid-column: 11;"></div><div class="gantt-grid-cell" style="grid-column: 12;"></div><div class="gantt-grid-cell" style="grid-column: 13;"></div><div class="gantt-grid-cell" style="grid-column: 14;"></div>
-              <!-- バーの配置 -->
               <div class="gantt-bar-wrapper" style="grid-column: 1 / 9;">
+                <div class="update-dot" title="新着アクションあり"></div>
                 <div class="gantt-bar bg-blue" style="width: 100%;">デザイン・コーディング</div>
               </div>
             </div>
           </div>
 
-          <!-- タスク行2：先方確認中（黄色） -->
+          <!-- タスク行2：依頼者確認中（黄色） -->
           <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
             <div class="gantt-cell-side">
-              <span class="badge badge-yellow">先方確認中</span>
+              <span class="badge badge-yellow">依頼者確認中</span>
               <div class="task-title">展示会パンフレット改修</div>
             </div>
             <div class="gantt-cell-time">
@@ -304,7 +294,7 @@
             </div>
           </div>
 
-          <!-- タスク行3：未着手（白黒） -->
+          <!-- タスク行3：未着手（黒） -->
           <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
             <div class="gantt-cell-side">
               <span class="badge badge-bw">未着手</span>
@@ -318,25 +308,11 @@
             </div>
           </div>
 
-          <!-- タスク行4：作業中（青） -->
-          <div class="gantt-row" onclick="alert('案件詳細ページへ移動します')">
-            <div class="gantt-cell-side">
-              <span class="badge badge-blue">作業中</span>
-              <div class="task-title">採用サイト リニューアル</div>
-            </div>
-            <div class="gantt-cell-time">
-              <div class="gantt-grid-cell" style="grid-column: 1;"></div><div class="gantt-grid-cell" style="grid-column: 2;"></div><div class="gantt-grid-cell" style="grid-column: 3;"></div><div class="gantt-grid-cell" style="grid-column: 4;"></div><div class="gantt-grid-cell" style="grid-column: 5;"></div><div class="gantt-grid-cell" style="grid-column: 6;"></div><div class="gantt-grid-cell" style="grid-column: 7;"></div><div class="gantt-grid-cell" style="grid-column: 8;"></div><div class="gantt-grid-cell" style="grid-column: 9;"></div><div class="gantt-grid-cell" style="grid-column: 10;"></div><div class="gantt-grid-cell" style="grid-column: 11;"></div><div class="gantt-grid-cell" style="grid-column: 12;"></div><div class="gantt-grid-cell" style="grid-column: 13;"></div><div class="gantt-grid-cell" style="grid-column: 14;"></div>
-              <div class="gantt-bar-wrapper" style="grid-column: 2 / 14;">
-                <div class="gantt-bar bg-blue" style="width: 100%;">WF作成・構成案</div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     </section>
 
-    <!-- 完了案件ギャラリー（画質最高指定） -->
+    <!-- 完了案件ギャラリー -->
     <section class="gallery-wrapper">
       <div class="gallery-header">Completed Projects</div>
       <div class="slideshow-container">
